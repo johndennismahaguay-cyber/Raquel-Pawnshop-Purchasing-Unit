@@ -141,6 +141,7 @@ textarea{width:100%;min-height:120px;font-family:ui-monospace,monospace;font-siz
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div id="lock-overlay" style="display:none;position:fixed;inset:0;background:var(--paper);z-index:9999;align-items:center;justify-content:center;padding:20px;">
@@ -463,6 +464,7 @@ textarea{width:100%;min-height:120px;font-family:ui-monospace,monospace;font-siz
     <button data-sub="security"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Security</button>
     <button data-sub="docheader"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/></svg>Document header</button>
     <button data-sub="backup"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Backup &amp; Restore</button>
+    <button data-sub="cloudsync"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10Z"/></svg>Cloud Sync</button>
   </div>
 
   <div id="users" class="subsection active">
@@ -523,6 +525,55 @@ textarea{width:100%;min-height:120px;font-family:ui-monospace,monospace;font-siz
       <input type="file" id="restore-file" accept="application/json,.json" onchange="handleRestoreFile(this)">
     </div>
   </div>
+
+  <div id="cloudsync" class="subsection">
+    <div class="card">
+      <h2><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10Z"/></svg>Cloud Sync <span style="color:var(--muted);font-weight:400;font-size:0.78rem">(share live data across browsers and devices)</span></h2>
+      <p style="color:var(--muted);font-size:0.85rem;margin:-6px 0 12px">By default this app only saves data in the current browser, so other devices opening the same link see their own empty copy. Connecting a free <b>Supabase</b> project turns on real shared storage — everyone who connects the same project sees the same data.</p>
+      <div class="statgrid" style="margin-bottom:14px">
+        <div class="stat"><div class="stat-ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg></div><div class="stat-body"><div class="num" id="cs-status" style="font-size:0.95rem">Not connected</div><div class="lbl" id="cs-lastsync">Data stays on this device only</div></div></div>
+      </div>
+      <details style="margin-bottom:14px">
+        <summary style="cursor:pointer;font-weight:600;font-size:0.88rem">One-time setup (about 5 minutes)</summary>
+        <ol style="font-size:0.85rem;color:var(--ink);line-height:1.7;padding-left:20px;margin-top:10px">
+          <li>Go to <b>supabase.com</b> → sign up free → "New project" (pick any name/password/region).</li>
+          <li>Once the project is ready, open the <b>SQL Editor</b> (left sidebar) → "New query" → paste this and click Run:
+            <pre style="background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px;overflow-x:auto;font-size:0.76rem;margin:6px 0">drop table if exists app_data;
+
+create table app_data (
+  key text primary key,
+  value jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now()
+);
+
+alter table app_data enable row level security;
+
+create policy "public read" on app_data
+  for select using (true);
+
+create policy "public insert" on app_data
+  for insert with check (true);
+
+create policy "public update" on app_data
+  for update using (true) with check (true);</pre>
+          </li>
+          <li>Go to <b>Project Settings → API</b>. Copy the <b>Project URL</b> and the <b>anon public</b> key.</li>
+          <li>Paste both below and click Connect.</li>
+        </ol>
+        <p style="color:var(--danger);font-size:0.8rem;margin-top:8px"><b>Security note:</b> the setup above makes the data readable and writable by anyone who has your Project URL and anon key — there's no extra password on the database itself. That's fine for an internal tool shared only with trusted staff, but don't post these credentials publicly. Your in-app PIN lock (Settings → Security) protects the screen, not the database directly.</p>
+      </details>
+      <div class="grid">
+        <div><label>Supabase Project URL</label><input id="cs-url" placeholder="https://xxxxxxxx.supabase.co"></div>
+        <div><label>Supabase anon public key</label><input id="cs-key" placeholder="eyJhbGciOi..."></div>
+      </div>
+      <div class="btnrow">
+        <button class="primary" onclick="connectCloud()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10Z"/></svg>Connect</button>
+        <button class="ghost" onclick="syncNowManual()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Sync now</button>
+        <button class="ghost" onclick="disconnectCloud()" style="color:var(--danger)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Disconnect</button>
+      </div>
+      <p style="color:var(--muted);font-size:0.78rem;margin-top:10px">The document header syncs too. Your PIN lock (Security) stays local to each device on purpose.</p>
+    </div>
+  </div>
 </section>
 
 <div id="pdf-render-area" style="position:fixed;left:-10000px;top:0;"></div>
@@ -546,7 +597,7 @@ textarea{width:100%;min-height:120px;font-family:ui-monospace,monospace;font-siz
 </div>
 <script>
 function load(k){ try{ const r=localStorage.getItem(k); return r?JSON.parse(r):[]; }catch(e){ return []; } }
-function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} if(typeof pushKey==='function') pushKey(k,v); }
 let proc = load('proc'), ac = load('ac'), br = load('br'), pr = load('pr'), sup = load('sup'), users = load('users'), cv = load('cv'), catalog = load('catalog'), priceHistory = load('priceHistory');
 const uid = ()=> Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 function nextCode(arr, field, prefix){
@@ -578,6 +629,7 @@ function notify(msg){
 
 // BACKUP & RESTORE
 const BACKUP_KEYS = ['proc','pr','ac','br','sup','users','cv','catalog','priceHistory'];
+const CLOUD_KEYS = BACKUP_KEYS.concat(['companyHeader']);
 function collectBackup(){
   const data = { _meta: { app:'RAQUEL PAWNSHOP-PURCHASING UNIT', exportedAt: new Date().toISOString(), version: 1 } };
   BACKUP_KEYS.forEach(k=>{ data[k] = load(k); });
@@ -1690,7 +1742,7 @@ function fillHeaderForm(){
 }
 function saveCompanyHeader(){
   const h = { name:document.getElementById('hdr-name').value, address:document.getElementById('hdr-address').value, contact:document.getElementById('hdr-contact').value };
-  try{ localStorage.setItem('companyHeader', JSON.stringify(h)); notify('Header saved — it will appear on printed and exported PR/PO forms.'); }catch(e){ notify('Could not save header.'); }
+  try{ save('companyHeader', h); notify('Header saved — it will appear on printed and exported PR/PO forms.'); }catch(e){ notify('Could not save header.'); }
 }
 
 // PRINT & PDF EXPORT (standard PR / PO form template)
@@ -1774,7 +1826,94 @@ async function exportPdfRecord(type, id){
   holder.innerHTML='';
 }
 
-refreshBranchSelects(); supplierOptions(); userOptions(); resetPr(); resetProc(); resetCv(); renderPr(); renderProc(); renderSup(); renderCv(); renderAc(); renderBr(); renderUsers(); populateItemCatalogList(); populateCatList(); renderInventory(); fillHeaderForm(); fillSecurityForm(); buildDashboard(); checkLogin();
+// CLOUD SYNC (optional Supabase-backed shared storage)
+let _cloudClient = null, _cloudPulling = false;
+function loadCloud(){ try{ const r=localStorage.getItem('cloudSync'); return r?JSON.parse(r):{enabled:false,url:'',key:''}; }catch(e){ return {enabled:false,url:'',key:''}; } }
+function saveCloudCfg(cfg){ try{ localStorage.setItem('cloudSync', JSON.stringify(cfg)); }catch(e){} }
+function fillCloudForm(){
+  const c = loadCloud();
+  document.getElementById('cs-url').value = c.url||'';
+  document.getElementById('cs-key').value = c.key||'';
+  updateCloudStatus();
+}
+function updateCloudStatus(ts){
+  const c = loadCloud();
+  const statusEl = document.getElementById('cs-status'), subEl = document.getElementById('cs-lastsync');
+  if(!statusEl) return;
+  if(c.enabled && c.url){
+    statusEl.textContent = 'Connected';
+    subEl.textContent = ts? 'Last synced '+new Date(ts).toLocaleTimeString() : (localStorage.getItem('cloudLastSync')? 'Last synced '+new Date(+localStorage.getItem('cloudLastSync')).toLocaleTimeString() : 'Not synced yet');
+  } else {
+    statusEl.textContent = 'Not connected';
+    subEl.textContent = 'Data stays on this device only';
+  }
+}
+function getCloudClient(){
+  const c = loadCloud();
+  if(!c.enabled || !c.url || !c.key || !window.supabase) return null;
+  if(!_cloudClient){ try{ _cloudClient = window.supabase.createClient(c.url, c.key); }catch(e){ return null; } }
+  return _cloudClient;
+}
+function pushKey(key, value){
+  if(!CLOUD_KEYS.includes(key)) return;
+  const client = getCloudClient(); if(!client) return;
+  client.from('app_data').upsert({ key, value, updated_at: new Date().toISOString() }).then(({error})=>{
+    if(error) console.warn('Cloud push failed for', key, error.message);
+  });
+}
+function refreshAllViews(){
+  refreshBranchSelects(); supplierOptions(); userOptions();
+  renderPr(); renderProc(); renderSup(); renderCv(); renderAc(); renderBr(); renderUsers();
+  populateItemCatalogList(); populateCatList(); refreshInventory();
+  fillHeaderForm(); buildDashboard();
+}
+async function pullAndRefresh(silent){
+  const client = getCloudClient(); if(!client || _cloudPulling) return;
+  _cloudPulling = true;
+  try{
+    const { data, error } = await client.from('app_data').select('key,value');
+    if(error){ if(!silent) notify('Cloud sync failed: '+error.message); _cloudPulling=false; return; }
+    const remoteKeys = new Set((data||[]).map(r=>r.key));
+    (data||[]).forEach(row=>{
+      localStorage.setItem(row.key, JSON.stringify(row.value));
+      if(row.key==='proc') proc=row.value; else if(row.key==='pr') pr=row.value; else if(row.key==='ac') ac=row.value;
+      else if(row.key==='br') br=row.value; else if(row.key==='sup') sup=row.value; else if(row.key==='users') users=row.value;
+      else if(row.key==='cv') cv=row.value; else if(row.key==='catalog') catalog=row.value; else if(row.key==='priceHistory') priceHistory=row.value;
+    });
+    // seed the cloud with any local-only keys it doesn't have yet (first connection)
+    CLOUD_KEYS.forEach(k=>{ if(!remoteKeys.has(k)) pushKey(k, k==='companyHeader'? loadHeader() : load(k)); });
+    refreshAllViews();
+    localStorage.setItem('cloudLastSync', String(Date.now()));
+    updateCloudStatus(Date.now());
+    if(!silent) notify('Synced with cloud.');
+  }catch(e){ if(!silent) notify('Cloud sync failed.'); }
+  _cloudPulling = false;
+}
+async function connectCloud(){
+  const url = document.getElementById('cs-url').value.trim(), key = document.getElementById('cs-key').value.trim();
+  if(!url || !key) return notify('Enter both the Project URL and the anon public key.');
+  if(!window.supabase) return notify('Cloud sync library still loading — try again in a moment.');
+  saveCloudCfg({ enabled:true, url, key });
+  _cloudClient = null;
+  updateCloudStatus();
+  await pullAndRefresh(false);
+}
+function disconnectCloud(){
+  confirmThen('Disconnect cloud sync? Data already saved stays on this device, but it will stop sharing with other browsers.', ()=>{
+    saveCloudCfg({ enabled:false, url:'', key:'' });
+    _cloudClient = null;
+    document.getElementById('cs-url').value=''; document.getElementById('cs-key').value='';
+    updateCloudStatus();
+    notify('Cloud sync disconnected.');
+  });
+}
+function syncNowManual(){
+  if(!loadCloud().enabled) return notify('Connect a Supabase project first.');
+  pullAndRefresh(false);
+}
+
+refreshBranchSelects(); supplierOptions(); userOptions(); resetPr(); resetProc(); resetCv(); renderPr(); renderProc(); renderSup(); renderCv(); renderAc(); renderBr(); renderUsers(); populateItemCatalogList(); populateCatList(); renderInventory(); fillHeaderForm(); fillSecurityForm(); fillCloudForm(); buildDashboard(); checkLogin();
+if(loadCloud().enabled){ setTimeout(()=>pullAndRefresh(true), 500); setInterval(()=>pullAndRefresh(true), 25000); }
 </script>
 </body>
 </html>
