@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RAQUEL PAWNSHOP-PURCHASING UNIT</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --ink:#182225; --paper:#f4f2ec; --line:#dcd8cd; --card:#ffffff; --muted:#6d7674;
+  --accent:#2f6f5e; --accent-dark:#215048; --accent-soft:#e3ede9;
+  --po:#b9791f; --po-soft:#f7ecd9; --po-dark:#8a5913;
+  --sup:#3d5a80; --sup-soft:#e6ecf3;
+  --danger:#a4432f; --danger-soft:#f5e2dc;
+  --shadow:0 1px 2px rgba(20,25,24,.04), 0 6px 16px -8px rgba(20,25,24,.12);
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --ink:#e9e7de; --paper:#12181a; --line:#2a3336; --card:#1a2224; --muted:#8f9997;
+    --accent-soft:#1c2e2a; --po-soft:#2c2416; --sup-soft:#1c2530; --danger-soft:#2e1e1a; --shadow:0 1px 2px rgba(0,0,0,.3), 0 6px 16px -8px rgba(0,0,0,.5); }
+}
+:root[data-theme="dark"]{ --ink:#e9e7de; --paper:#12181a; --line:#2a3336; --card:#1a2224; --muted:#8f9997;
+  --accent-soft:#1c2e2a; --po-soft:#2c2416; --sup-soft:#1c2530; --danger-soft:#2e1e1a; --shadow:0 1px 2px rgba(0,0,0,.3), 0 6px 16px -8px rgba(0,0,0,.5); }
+html{scroll-padding-top:env(safe-area-inset-top,0px);} *{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+svg{vertical-align:middle;flex:none}
+.app-shell{display:flex;min-height:100vh;align-items:flex-start;}
+.sidebar{width:236px;flex:none;background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:14px;padding:18px 14px;position:sticky;top:0;height:100vh;overflow-y:auto;padding-top:calc(18px + env(safe-area-inset-top,0px));}
+.brand{display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.brand .logo{width:38px;height:38px;border-radius:10px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:var(--shadow);}
+.brand h1{margin:0 0 2px;font-size:0.95rem;font-weight:800;letter-spacing:-0.01em;line-height:1.25;}
+.brand p{margin:0;color:var(--muted);font-size:0.72rem;line-height:1.3;}
+.sidebar nav{display:flex;flex-direction:column;gap:4px;flex:1;}
+.sidebar-footer{border-top:1px solid var(--line);padding-top:12px;margin-top:auto;}
+.sidebar-footer button{width:100%;justify-content:center;}
+.content{flex:1;min-width:0;}
+nav button{width:100%;flex:none;display:inline-flex;align-items:center;gap:9px;background:none;border:1px solid transparent;color:var(--muted);padding:9px 12px;border-radius:9px;font:600 0.87rem "Inter",sans-serif;cursor:pointer;transition:background .15s,color .15s;text-align:left;}
+nav button:hover{background:var(--accent-soft);color:var(--ink);}
+nav button.active{background:var(--accent);color:#fff;box-shadow:var(--shadow);}
+main{padding:22px 26px 48px;max-width:1080px;margin:0;}
+.section{display:none;} .section.active{display:block;}
+@media (max-width:760px){
+  .app-shell{flex-direction:column;}
+  .sidebar{width:100%;height:auto;position:static;flex-direction:row;align-items:center;overflow-x:auto;padding:10px 14px;border-right:none;border-bottom:1px solid var(--line);gap:10px;}
+  .brand{display:none;}
+  .sidebar nav{flex-direction:row;flex:none;}
+  nav button{width:auto;white-space:nowrap;}
+  .sidebar-footer{border-top:none;margin-top:0;margin-left:auto;padding-top:0;flex:none;}
+  .sidebar-footer button{width:auto;}
+  main{padding:16px 16px 40px;}
+}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow);}
+.card h2{margin:0 0 14px;font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px;}
+.card h2 .muted-note{color:var(--muted);font-weight:400;font-size:0.78rem;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+label{display:block;font-size:0.76rem;color:var(--muted);margin-bottom:4px;font-weight:500;}
+input,select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:0.9rem "Inter",sans-serif;transition:border-color .15s;}
+input:focus,select:focus{outline:none;border-color:var(--accent);}
+.btnrow{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+button{font-family:"Inter",sans-serif;}
+button.primary{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;border:none;padding:10px 16px;border-radius:9px;cursor:pointer;font-size:0.87rem;font-weight:600;transition:background .15s,transform .1s;}
+button.primary:hover{background:var(--accent-dark);}
+button.primary:active{transform:scale(0.98);}
+button.ghost{display:inline-flex;align-items:center;gap:7px;background:none;border:1px solid var(--line);color:var(--ink);padding:9px 14px;border-radius:9px;cursor:pointer;font-size:0.87rem;font-weight:500;transition:background .15s,border-color .15s;}
+button.ghost:hover{background:var(--accent-soft);border-color:var(--accent);}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap;}
+th{color:var(--muted);font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.03em;background:var(--paper);}
+tbody tr{transition:background .12s;} tbody tr:hover{background:var(--accent-soft);}
+.twrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);}
+.twrap table{border:none;}
+.actions{white-space:nowrap;}
+.actions button{display:inline-flex;align-items:center;gap:4px;background:none;border:none;cursor:pointer;color:var(--accent);font-size:0.78rem;font-weight:600;padding:4px 7px;border-radius:6px;transition:background .12s;}
+.actions button:hover{background:var(--accent-soft);}
+.actions button.del{color:var(--danger);}
+.actions button.del:hover{background:var(--danger-soft);}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:0.72rem;font-weight:600;background:var(--line);}
+.pill.ok{background:var(--accent-soft);color:var(--accent-dark);} .pill.warn{background:var(--po-soft);color:var(--po-dark);} .pill.plan{background:var(--sup-soft);color:var(--sup);}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;min-width:0;}
+.stat .stat-ic{width:34px;height:34px;border-radius:9px;background:var(--accent-soft);color:var(--accent-dark);display:flex;align-items:center;justify-content:center;flex:none;}
+.stat .stat-body{min-width:0;flex:1;}
+.stat .num{font-size:1.2rem;font-weight:800;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .stat .lbl{color:var(--muted);font-size:0.74rem;}
+textarea{width:100%;min-height:120px;font-family:ui-monospace,monospace;font-size:0.78rem;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);}
+.empty{color:var(--muted);font-size:0.85rem;padding:20px 0;text-align:center;}
+.filterbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+.filterbar select{max-width:200px;}
+.progress{display:flex;align-items:center;gap:6px;}
+.progress .bar{width:60px;height:6px;border-radius:4px;background:var(--line);overflow:hidden;}
+.progress .bar span{display:block;height:100%;background:var(--accent);}
+.checklist-row td{background:var(--paper);}
+.checklist-box{padding:10px 4px;}
+.checklist-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:0.86rem;}
+.checklist-item span.txt{flex:1;}
+.checklist-item.done span.txt{text-decoration:line-through;color:var(--muted);}
+.checklist-add{display:flex;gap:6px;margin-top:8px;}
+.checklist-add input{flex:1;}
+.checklist-add select{flex:1;}
+.linkbtn{background:none;border:none;color:var(--accent);cursor:pointer;font-size:0.82rem;padding:0;display:inline-flex;align-items:center;gap:4px;}
+.subnav{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.subnav button{display:inline-flex;align-items:center;gap:6px;background:var(--paper);border:1px solid var(--line);color:var(--muted);padding:7px 13px;border-radius:20px;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all .15s;}
+.subnav button.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.subnav button[data-sub="pr"].active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.subnav button[data-sub="po"].active{background:var(--po);color:#fff;border-color:var(--po);}
+.subnav button[data-sub="sup"].active{background:var(--sup);color:#fff;border-color:var(--sup);}
+.subsection{display:none;} .subsection.active{display:block;}
+.badge{font-family:ui-monospace,monospace;font-size:0.78rem;color:var(--muted);}
+.lineitems-box{border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:4px;background:var(--paper);}
+.lineitem{display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px;margin-bottom:6px;align-items:center;}
+.lineitem.po{grid-template-columns:1.6fr 1fr 0.7fr 0.9fr 0.9fr;}
+.lineitem.cv{grid-template-columns:0.4fr 1.6fr 1fr 1.4fr 0.6fr;}
+.cv-card{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;background:var(--card);}
+.cv-card .cv-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+.cv-quote-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-size:0.86rem;gap:8px;}
+.cv-quote-row:last-child{border-bottom:none;}
+.cv-quote-row.winner{background:var(--accent-soft);border-radius:8px;padding-left:8px;}
+.signrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px;}
+.lineitem input{margin:0;}
+.lineitem .rm{background:none;border:none;color:var(--danger);cursor:pointer;font-size:1rem;padding:0 4px;border-radius:6px;}
+.lineitem .rm:hover{background:var(--danger-soft);}
+.numbering{display:flex;gap:14px;align-items:center;margin:10px 0;font-size:0.85rem;flex-wrap:wrap;}
+.numbering label.radio{display:flex;align-items:center;gap:5px;font-size:0.85rem;color:var(--ink);margin:0;}
+.numbering input[type=radio]{width:auto;}
+.numbering .manual-wrap{display:flex;align-items:center;gap:6px;}
+.numbering .manual-wrap input{width:140px;}
+.activity{font-size:0.85rem;padding:8px 0;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.activity:last-child{border-bottom:none;}
+.print-doc{width:100%;max-width:740px;margin:0 auto;background:#fff;color:#111;font-family:Arial,Helvetica,sans-serif;font-size:13px;padding:32px;box-sizing:border-box;}
+.print-doc .hd{text-align:center;margin-bottom:16px;}
+.print-doc .hd h1{margin:0;font-size:18px;}
+.print-doc .hd p{margin:2px 0;color:#444;font-size:12px;}
+.print-doc .doctitle{text-align:center;font-size:16px;font-weight:700;letter-spacing:1px;border-top:2px solid #111;border-bottom:2px solid #111;padding:8px 0;margin:14px 0;}
+.print-doc .noline{display:flex;justify-content:space-between;margin-bottom:10px;font-size:12px;}
+.print-doc .metagrid{display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;margin-bottom:16px;font-size:12.5px;}
+.print-doc table{width:100%;border-collapse:collapse;margin-top:8px;}
+.print-doc th,.print-doc td{border:1px solid #999;padding:6px 8px;font-size:12.5px;}
+.print-doc th{background:#f0f0ee;text-align:left;}
+.print-doc td.r,.print-doc th.r{text-align:right;}
+.print-doc .sig{display:flex;justify-content:space-between;margin-top:60px;}
+.print-doc .sig div{width:30%;text-align:center;border-top:1px solid #333;padding-top:6px;font-size:11.5px;color:#333;}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<div id="lock-overlay" style="display:none;position:fixed;inset:0;background:var(--paper);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div class="card" style="max-width:320px;width:100%;text-align:center;">
+    <h2 style="justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Enter PIN</h2>
+    <input id="lock-input" type="password" inputmode="numeric" placeholder="PIN" style="text-align:center;font-size:1.1rem;letter-spacing:4px" onkeydown="if(event.key==='Enter')tryUnlock()">
+    <div id="lock-error" style="color:var(--danger);font-size:0.8rem;margin-top:8px;display:none">Incorrect PIN. Try again.</div>
+    <div class="btnrow" style="justify-content:center"><button class="primary" onclick="tryUnlock()">Unlock</button></div>
+  </div>
+</div>
+<div class="app-shell">
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div>
+    <div>
+      <h1>RAQUEL PAWNSHOP-PURCHASING UNIT</h1>
+      <p>Procurement · Aircon · Branch expansion</p>
+    </div>
+  </div>
+  <nav>
+  <button data-tab="dashboard" class="active"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</button>
+  <button data-tab="procurement"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Procurement</button>
+  <button data-tab="aircon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="17" y1="5" x2="7" y2="19"/><line x1="7" y1="5" x2="17" y2="19"/></svg>Aircon</button>
+  <button data-tab="branches"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20"/><line x1="9" y1="7" x2="9.01" y2="7"/><line x1="9" y1="11" x2="9.01" y2="11"/><line x1="9" y1="15" x2="9.01" y2="15"/><line x1="15" y1="7" x2="15.01" y2="7"/><line x1="15" y1="11" x2="15.01" y2="11"/><line x1="15" y1="15" x2="15.01" y2="15"/></svg>Branches</button>
+  <button data-tab="inventory"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>Inventory</button>
+  <button data-tab="reports"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports</button>
+  <button data-tab="settings"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>Settings</button>
+  </nav>
+  <div class="sidebar-footer">
+    <button id="lock-btn" class="ghost" style="display:none" onclick="lockApp()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Lock</button>
+  </div>
+</aside>
+<div class="content">
+<main>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="section active">
+  <div class="statgrid" id="dash-stats"></div>
+  <div class="card">
+    <h2><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20"/><line x1="9" y1="7" x2="9.01" y2="7"/><line x1="9" y1="11" x2="9.01" y2="11"/><line x1="15" y1="7" x2="15.01" y2="7"/><line x1="15" y1="11" x2="15.01" y2="11"/></svg>Branches by status</h2>
+    <div class="statgrid" id="dash-branch-stats"></div>
+  </div>
+  <div class="card">
+    <h2><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Recent activity</h2>
+    <div id="dash-activity"></div>
+  </div>
+</section>
+
+<!-- PROCUREMENT -->
+<section id="procurement" class="section">
+  <div class="subnav">
+    <button data-sub="pr" class="active"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Purchase Requests</button>
+    <button data-sub="po"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Purchase Orders</button>
+    <button data-sub="sup"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Suppliers</button>
+    <button data-sub="cv"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Canvassing</button>
+  </div>
+
+  <!-- PURCHASE REQUESTS -->
+  <div id="pr" class="subsection active">
+    <div class="card">
+      <h2 id="pr-form-title">New purchase request</h2>
+      <input type="hidden" id="pr-id">
+      <div class="numbering">
+        <label class="radio"><input type="radio" name="pr-numbering" value="auto" checked onchange="togglePrManual()"> Automatic numbering</label>
+        <label class="radio"><input type="radio" name="pr-numbering" value="manual" onchange="togglePrManual()"> Manual</label>
+        <span class="manual-wrap" id="pr-manual-wrap" style="display:none">PR No: <input id="pr-manual-no" placeholder="e.g. PR-2026-001"></span>
+      </div>
+      <div class="grid">
+        <div><label>Branch</label><select id="pr-branch"></select></div>
+        <div><label>Requested by</label><input id="pr-by"></div>
+        <div><label>Date needed</label><input id="pr-date" type="date"></div>
+        <div><label>Priority</label><select id="pr-priority"><option>Normal</option><option>Urgent</option></select></div>
+        <div><label>Status</label><select id="pr-status"><option>Pending</option><option>Approved</option><option>Rejected</option><option>Converted to PO</option></select></div>
+      </div>
+      <div class="signrow">
+        <div><label>Prepared by</label><select id="pr-preparedby"></select></div>
+        <div><label>Checked by</label><select id="pr-checkedby"></select></div>
+        <div><label>Approved by</label><select id="pr-approvedby"></select></div>
+      </div>
+      <label style="margin-top:12px">Items requested</label>
+      <div class="lineitems-box" id="pr-items"></div>
+      <button class="ghost" style="margin-top:6px" onclick="addPrItemRow()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add item</button>
+      <div class="btnrow"><button class="primary" onclick="savePr()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save request</button><button class="ghost" onclick="resetPr()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button></div>
+    </div>
+    <div class="card">
+      <div class="filterbar"><label style="margin:0">Filter branch</label><select id="pr-filter" onchange="renderPr()"></select><input id="pr-search" placeholder="Search PR no, item, requester…" oninput="renderPr()" style="max-width:220px"></div>
+      <div class="twrap"><table id="pr-table"><thead><tr>
+        <th>PR No</th><th>Branch</th><th>Items</th><th>Requested by</th><th>Needed by</th><th>Priority</th><th>Status</th><th></th>
+      </tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- PURCHASE ORDERS -->
+  <div id="po" class="subsection">
+    <div class="card">
+      <h2 id="proc-form-title">New purchase order</h2>
+      <input type="hidden" id="proc-id">
+      <div class="numbering">
+        <label class="radio"><input type="radio" name="proc-numbering" value="auto" checked onchange="toggleProcManual()"> Automatic numbering</label>
+        <label class="radio"><input type="radio" name="proc-numbering" value="manual" onchange="toggleProcManual()"> Manual</label>
+        <span class="manual-wrap" id="proc-manual-wrap" style="display:none">PO No: <input id="proc-manual-no" placeholder="e.g. PO-2026-001"></span>
+      </div>
+      <div class="grid">
+        <div><label>Branch</label><select id="proc-branch"></select></div>
+        <div><label>Linked PR No (optional)</label><input id="proc-prno" placeholder="e.g. PR-0001"></div>
+        <div><label>Supplier</label><select id="proc-supplier" onchange="renderPoItemRows()"></select></div>
+        <div><label>Date</label><input id="proc-date" type="date"></div>
+        <div><label>Status</label><select id="proc-status">
+          <option>Requested</option><option>Ordered</option><option>Delivered</option><option>Cancelled</option>
+        </select></div>
+      </div>
+      <div class="signrow">
+        <div><label>Prepared by</label><select id="proc-preparedby"></select></div>
+        <div><label>Checked by</label><select id="proc-checkedby"></select></div>
+        <div><label>Approved by</label><select id="proc-approvedby"></select></div>
+      </div>
+      <label style="margin-top:12px">Items ordered</label>
+      <div class="lineitems-box" id="proc-items"></div>
+      <button class="ghost" style="margin-top:6px" onclick="addPoItemRow()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add item</button>
+      <div class="btnrow">
+        <button class="primary" onclick="saveProc()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save order</button>
+        <button class="ghost" onclick="resetProc()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 1 0-8-8"/><path d="M12 12 16 8"/><line x1="12" y1="2" x2="12" y2="4"/></svg>Status monitoring</h2>
+      <div class="statgrid" id="proc-status-cards"></div>
+    </div>
+    <div class="card">
+      <div class="filterbar">
+        <label style="margin:0">Filter branch</label>
+        <select id="proc-filter" onchange="renderProc()"></select>
+        <input id="proc-search" placeholder="Search PO no, item, supplier…" oninput="renderProc()" style="max-width:220px">
+      </div>
+      <div class="twrap"><table id="proc-table"><thead><tr>
+        <th>PO No</th><th>PR No</th><th>Branch</th><th>Items</th><th>Supplier</th><th>Total qty</th><th>Total cost</th><th>Date</th><th>Status</th><th>Last updated</th><th></th>
+      </tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- SUPPLIERS -->
+  <div id="sup" class="subsection">
+    <div class="card">
+      <h2 id="sup-form-title">Add supplier</h2>
+      <input type="hidden" id="sup-id">
+      <div class="grid">
+        <div><label>Supplier name</label><input id="sup-name"></div>
+        <div><label>Category</label><input id="sup-category" placeholder="e.g. HVAC, Office supplies"></div>
+        <div><label>Contact person</label><input id="sup-contact"></div>
+        <div><label>Phone</label><input id="sup-phone"></div>
+        <div><label>Email</label><input id="sup-email"></div>
+        <div><label>Rating</label><select id="sup-rating"><option>Excellent</option><option>Good</option><option>Average</option><option>Poor</option></select></div>
+        <div><label>Status</label><select id="sup-status"><option>Active</option><option>Inactive</option></select></div>
+      </div>
+      <div class="btnrow"><button class="primary" onclick="saveSup()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save supplier</button><button class="ghost" onclick="resetSup()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button></div>
+    </div>
+    <div class="card">
+      <div class="filterbar"><input id="sup-search" placeholder="Search supplier, category, contact…" oninput="renderSup()" style="max-width:260px"></div>
+      <div class="twrap"><table id="sup-table"><thead><tr>
+        <th>Supplier</th><th>Category</th><th>Contact</th><th>Rating</th><th>Status</th><th>POs</th><th>Total spend</th><th></th>
+      </tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- CANVASSING -->
+  <div id="cv" class="subsection">
+    <div class="card">
+      <h2 id="cv-form-title">New canvass sheet</h2>
+      <input type="hidden" id="cv-id">
+      <div class="grid">
+        <div><label>Branch</label><select id="cv-branch"></select></div>
+        <div><label>Linked PR No (optional)</label><select id="cv-prno" onchange="fillCvFromPr()"></select></div>
+        <div><label>Date</label><input id="cv-date" type="date"></div>
+      </div>
+      <p style="color:var(--muted);font-size:0.78rem;margin:8px 0 0">Pick a PR above to pull in its items automatically.</p>
+      <label style="margin-top:12px">Items to canvass</label>
+      <div class="lineitems-box" id="cv-items"></div>
+      <button class="ghost" style="margin-top:6px" onclick="addCvItemRow()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add item</button>
+      <label style="margin-top:14px">Supplier quotes comparison</label>
+      <div class="twrap" id="cv-grid"></div>
+      <button class="ghost" style="margin-top:6px" onclick="addCvSupplierCol()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add supplier</button>
+      <p style="color:var(--muted);font-size:0.78rem;margin:8px 0 0">Enter each supplier's price per item, then pick a Winner for each row.</p>
+      <div class="btnrow">
+        <button class="primary" onclick="saveCv()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save canvass</button>
+        <button class="ghost" onclick="resetCv()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="filterbar"><label style="margin:0">Filter branch</label><select id="cv-filter" onchange="renderCv()"></select><input id="cv-search" placeholder="Search CV no, item, PR…" oninput="renderCv()" style="max-width:220px"></div>
+      <div id="cv-list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- AIRCON -->
+<section id="aircon" class="section">
+  <div class="card">
+    <h2 id="ac-form-title">Add aircon unit</h2>
+    <input type="hidden" id="ac-id">
+    <div class="grid">
+      <div><label>Branch</label><select id="ac-branch"></select></div>
+      <div><label>Unit ID / Location</label><input id="ac-unit" placeholder="e.g. AC-02, 2nd Floor Lobby"></div>
+      <div><label>Brand / Model</label><input id="ac-model"></div>
+      <div><label>Service provider</label><select id="ac-provider" onchange="showProviderContact()"></select></div>
+      <div><label>Install date</label><input id="ac-install" type="date"></div>
+      <div><label>Last service</label><input id="ac-last" type="date" onchange="recalcNextDue()"></div>
+      <div><label>Service interval (days)</label><input id="ac-interval" type="number" min="1" value="90" onchange="recalcNextDue()"></div>
+      <div><label>Next service due</label><input id="ac-next" type="date"></div>
+      <div><label>Status</label><select id="ac-status">
+        <option>Operational</option><option>Needs service</option><option>Under repair</option><option>Decommissioned</option>
+      </select></div>
+    </div>
+    <div id="ac-provider-contact" style="margin-top:8px;font-size:0.82rem;color:var(--muted)"></div>
+    <p style="color:var(--muted);font-size:0.78rem;margin:10px 0 0">Next service due is calculated automatically from Last service + Service interval. You can still override it manually if needed.</p>
+    <div class="btnrow">
+      <button class="primary" onclick="saveAc()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save unit</button>
+      <button class="ghost" onclick="resetAc()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="filterbar">
+      <label style="margin:0">Filter branch</label>
+      <select id="ac-filter" onchange="renderAc()"></select>
+      <input id="ac-search" placeholder="Search unit, model, provider…" oninput="renderAc()" style="max-width:220px">
+    </div>
+    <div class="twrap"><table id="ac-table"><thead><tr>
+      <th>Branch</th><th>Unit / Location</th><th>Model</th><th>Service provider</th><th>Contact</th><th>Installed</th><th>Last service</th><th>Next due</th><th>Status</th><th>Due status</th><th>History</th><th></th>
+    </tr></thead><tbody></tbody></table></div>
+  </div>
+</section>
+
+<!-- BRANCHES -->
+<section id="branches" class="section">
+  <div class="card">
+    <h2 id="br-form-title">Add branch</h2>
+    <input type="hidden" id="br-id">
+    <div class="grid">
+      <div><label>Branch name</label><input id="br-name"></div>
+      <div><label>Region / area</label><input id="br-region"></div>
+      <div><label>Expansion stage</label><select id="br-stage">
+        <option>Planning</option><option>Site acquired</option><option>Fit-out</option><option>Pre-opening</option><option>Operational</option>
+      </select></div>
+      <div><label>Target open date</label><input id="br-target" type="date"></div>
+      <div><label>Branch manager</label><input id="br-manager" placeholder="Contact person"></div>
+      <div><label>Phone</label><input id="br-phone"></div>
+      <div><label>Email</label><input id="br-email" type="email"></div>
+      <div><label>Address</label><input id="br-address"></div>
+      <div><label>Notes</label><input id="br-notes"></div>
+    </div>
+    <div class="btnrow">
+      <button class="primary" onclick="saveBr()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save branch</button>
+      <button class="ghost" onclick="resetBr()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="filterbar"><input id="br-search" placeholder="Search branch, region, manager…" oninput="renderBr()" style="max-width:260px"></div>
+    <div class="twrap" style="max-height:520px;overflow-y:auto;"><table id="br-table"><thead style="position:sticky;top:0;z-index:1;"><tr>
+      <th>Branch</th><th>Region</th><th>Stage</th><th>Target open</th><th>Manager</th><th>Contact</th><th>Notes</th><th>Checklist</th><th></th>
+    </tr></thead><tbody></tbody></table></div>
+  </div>
+</section>
+
+<!-- INVENTORY -->
+<section id="inventory" class="section">
+  <div class="card">
+    <h2 id="inv-form-title">Add inventory item</h2>
+    <input type="hidden" id="inv-id">
+    <div class="grid">
+      <div><label>Item name</label><input id="inv-name" list="item-catalog-list" placeholder="Standard item name"></div>
+      <div><label>Category</label><input id="inv-category" list="cat-list"></div>
+      <div><label>Unit</label><input id="inv-unit" value="pcs" placeholder="pcs, box, set"></div>
+      <div><label>On hand</label><input id="inv-qty" type="number" min="0" value="0"></div>
+      <div><label>Reorder level</label><input id="inv-reorder" type="number" min="0" value="0"></div>
+      <div><label>Notes</label><input id="inv-notes"></div>
+    </div>
+    <p style="color:var(--muted);font-size:0.78rem;margin:10px 0 0">Items are added automatically when you save a Purchase Order, so names stay uniform on every PR, PO and canvass sheet. Marking a PO as Delivered adds its quantities to On hand (and reverses if you change the status back).</p>
+    <div class="btnrow">
+      <button class="primary" onclick="saveInv()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save item</button>
+      <button class="ghost" onclick="resetInv()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Inventory &amp; price monitoring</h2>
+    <p style="color:var(--muted);font-size:0.82rem;margin:-6px 0 12px">Open Details on any item to compare suppliers, see the price trend and the purchase log.</p>
+    <div class="filterbar"><input id="inv-search" placeholder="Search item or category…" oninput="renderInventory()" style="max-width:260px"></div>
+    <div class="twrap"><table id="inv-table"><thead><tr>
+      <th>Item</th><th>Category</th><th>On hand</th><th>Stock status</th><th>Last price</th><th>Best price</th><th>Suppliers</th><th>Details</th><th></th>
+    </tr></thead><tbody></tbody></table></div>
+  </div>
+</section>
+
+<!-- REPORTS -->
+<section id="reports" class="section">
+  <div class="statgrid" id="stat-cards"></div>
+  <div class="card">
+    <h2><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="21"/></svg>Export for Excel / Google Sheets</h2>
+    <p style="color:var(--muted);font-size:0.85rem;margin-top:-6px">Pick a dataset, then copy the text below and paste it into a spreadsheet — it's plain CSV.</p>
+    <div class="filterbar">
+      <select id="export-pick" onchange="buildExport()">
+        <option value="pr">Purchase Requests</option>
+        <option value="proc">Purchase Orders</option>
+        <option value="sup">Suppliers</option>
+        <option value="ac">Aircon units</option>
+        <option value="achist">Aircon service history</option>
+        <option value="br">Branches</option>
+        <option value="cv">Canvassing</option>
+        <option value="inv">Inventory</option>
+        <option value="pricehist">Price history</option>
+      </select>
+      <button class="ghost" onclick="copyExport()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy to clipboard</button>
+    </div>
+    <textarea id="export-area" readonly></textarea>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings" class="section">
+  <div class="subnav">
+    <button data-sub="users" class="active"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Users</button>
+    <button data-sub="security"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Security</button>
+    <button data-sub="docheader"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/></svg>Document header</button>
+    <button data-sub="backup"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Backup &amp; Restore</button>
+  </div>
+
+  <div id="users" class="subsection active">
+    <div class="card">
+      <h2 id="user-form-title">Add user</h2>
+      <input type="hidden" id="user-id">
+      <div class="grid">
+        <div><label>Full name</label><input id="user-name" placeholder="e.g. Juan Dela Cruz"></div>
+        <div><label>Role / position</label><input id="user-role" placeholder="e.g. Branch Supervisor, Purchasing Officer"></div>
+      </div>
+      <div class="btnrow">
+        <button class="primary" onclick="saveUser()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save user</button>
+        <button class="ghost" onclick="resetUser()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>People available for Prepared by / Checked by / Approved by</h2>
+      <div class="filterbar"><input id="user-search" placeholder="Search name or role…" oninput="renderUsers()" style="max-width:260px"></div>
+      <div class="twrap"><table id="user-table"><thead><tr><th>Name</th><th>Role</th><th></th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div id="security" class="subsection">
+    <div class="card">
+      <h2>App access lock</h2>
+      <p style="color:var(--muted);font-size:0.85rem;margin-top:-6px">Require a PIN before this app opens on a device. This is a basic screen lock for shared devices, not encryption — anyone with access to this browser's developer tools can still see the underlying data. Don't rely on it to protect sensitive records.</p>
+      <div class="grid">
+        <div><label>Require PIN to open</label><select id="sec-enabled"><option value="0">Off</option><option value="1">On</option></select></div>
+        <div><label>PIN (4–8 digits)</label><input id="sec-pin" inputmode="numeric" placeholder="e.g. 1234"></div>
+      </div>
+      <div class="btnrow"><button class="primary" onclick="saveSecurity()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save security settings</button></div>
+    </div>
+  </div>
+
+  <div id="docheader" class="subsection">
+    <div class="card">
+      <h2><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/></svg>Document header <span style="color:var(--muted);font-weight:400;font-size:0.78rem">(optional — shown on printed/exported PR &amp; PO forms)</span></h2>
+      <div class="grid">
+        <div><label>Company name</label><input id="hdr-name" placeholder="Your Company Name"></div>
+        <div><label>Address</label><input id="hdr-address" placeholder="Branch/HQ address"></div>
+        <div><label>Contact</label><input id="hdr-contact" placeholder="Phone / email"></div>
+      </div>
+      <div class="btnrow"><button class="primary" onclick="saveCompanyHeader()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save header</button></div>
+    </div>
+  </div>
+
+  <div id="backup" class="subsection">
+    <div class="card">
+      <h2><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>Export a backup</h2>
+      <p style="color:var(--muted);font-size:0.85rem;margin:-6px 0 12px">Downloads everything saved in this browser — Purchase Requests, Purchase Orders, Canvassing, Suppliers, Aircon units, Branches, Inventory, Users, the document header, and security settings — as one JSON file.</p>
+      <div class="btnrow">
+        <button class="primary" onclick="exportBackup()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download backup</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>Restore from a backup</h2>
+      <p style="color:var(--danger);font-size:0.85rem;margin:-6px 0 12px"><b>Warning:</b> restoring replaces everything currently saved in this browser and cannot be undone. Export a fresh backup first if you're not sure.</p>
+      <input type="file" id="restore-file" accept="application/json,.json" onchange="handleRestoreFile(this)">
+    </div>
+  </div>
+</section>
+
+<div id="pdf-render-area" style="position:fixed;left:-10000px;top:0;"></div>
+<datalist id="item-catalog-list"></datalist><datalist id="cat-list"></datalist>
+
+<div id="toast" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;max-width:min(420px,90vw);background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:10px;box-shadow:var(--shadow);font-size:0.86rem;text-align:center;"></div>
+
+<div id="confirm-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9998;align-items:center;justify-content:center;padding:20px;">
+  <div class="card" style="max-width:320px;width:100%;">
+    <h2 style="margin-bottom:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Please confirm</h2>
+    <p id="confirm-msg" style="font-size:0.9rem;color:var(--ink)"></p>
+    <div class="btnrow">
+      <button class="primary" style="background:var(--danger)" onclick="confirmYes()">Yes, delete</button>
+      <button class="ghost" onclick="confirmNo()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+</div>
+<script>
+function load(k){ try{ const r=localStorage.getItem(k); return r?JSON.parse(r):[]; }catch(e){ return []; } }
+function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+let proc = load('proc'), ac = load('ac'), br = load('br'), pr = load('pr'), sup = load('sup'), users = load('users'), cv = load('cv'), catalog = load('catalog'), priceHistory = load('priceHistory');
+const uid = ()=> Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function nextCode(arr, field, prefix){
+  let max=0; arr.forEach(x=>{ const m=(x[field]||'').match(/(\d+)$/); if(m) max=Math.max(max,+m[1]); });
+  return prefix+'-'+String(max+1).padStart(4,'0');
+}
+function escAttr(s){ return String(s??'').replace(/"/g,'&quot;'); }
+function matchSearch(q, ...fields){ if(!q) return true; q=q.toLowerCase(); return fields.some(f=>String(f??'').toLowerCase().includes(q)); }
+let _confirmCb = null;
+function confirmThen(msg, cb){
+  document.getElementById('confirm-msg').textContent = msg;
+  _confirmCb = cb;
+  document.getElementById('confirm-overlay').style.display='flex';
+}
+function confirmYes(){
+  document.getElementById('confirm-overlay').style.display='none';
+  const cb = _confirmCb; _confirmCb = null;
+  if(cb) cb();
+}
+function confirmNo(){ document.getElementById('confirm-overlay').style.display='none'; _confirmCb=null; }
+let _toastTimer = null;
+function notify(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(()=>{ t.style.display='none'; }, 3200);
+}
+
+// BACKUP & RESTORE
+const BACKUP_KEYS = ['proc','pr','ac','br','sup','users','cv','catalog','priceHistory'];
+function collectBackup(){
+  const data = { _meta: { app:'RAQUEL PAWNSHOP-PURCHASING UNIT', exportedAt: new Date().toISOString(), version: 1 } };
+  BACKUP_KEYS.forEach(k=>{ data[k] = load(k); });
+  data.companyHeader = loadHeader();
+  data.appSecurity = loadSecurity();
+  return data;
+}
+async function exportBackup(){
+  const data = collectBackup();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
+  const filename = `raquel-pawnshop-backup-${today()}.json`;
+  try{
+    const downloads = window.claude ? await window.claude.use('downloads') : null;
+    if(downloads){ await downloads.save({ filename, data: blob }); notify('Backup downloaded: '+filename); }
+    else { const url = URL.createObjectURL(blob); window.open(url, '_blank'); notify('Backup ready — opened in a new tab, save it from there.'); }
+  }catch(e){ if(!(e && e.code==='declined')) notify('Could not create the backup file.'); }
+}
+function handleRestoreFile(input){
+  const file = input.files && input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    let data;
+    try{ data = JSON.parse(reader.result); }
+    catch(e){ notify('That file is not a valid backup (invalid JSON).'); input.value=''; return; }
+    if(!data || typeof data!=='object' || !BACKUP_KEYS.some(k=>Array.isArray(data[k]))){
+      notify('That file does not look like a RAQUEL PAWNSHOP backup.'); input.value=''; return;
+    }
+    confirmThen('Restore this backup? This replaces ALL current data in this browser and cannot be undone.', ()=>{
+      BACKUP_KEYS.forEach(k=>{ if(Array.isArray(data[k])) localStorage.setItem(k, JSON.stringify(data[k])); });
+      if(data.companyHeader) localStorage.setItem('companyHeader', JSON.stringify(data.companyHeader));
+      if(data.appSecurity) localStorage.setItem('appSecurity', JSON.stringify(data.appSecurity));
+      localStorage.setItem('invSeeded','1');
+      notify('Backup restored — reloading…');
+      setTimeout(()=>location.reload(), 700);
+    });
+  };
+  reader.readAsText(file);
+}
+function statCard(ic, num, lbl){ return `<div class="stat"><div class="stat-ic">${ic}</div><div class="stat-body"><div class="num" title="${escAttr(num)}">${num}</div><div class="lbl">${lbl}</div></div></div>`; }
+const ICN = {
+  building:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20"/><line x1="9" y1="7" x2="9.01" y2="7"/><line x1="9" y1="11" x2="9.01" y2="11"/><line x1="15" y1="7" x2="15.01" y2="7"/><line x1="15" y1="11" x2="15.01" y2="11"/></svg>',
+  cart:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>',
+  fileText:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+  peso:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="4" x2="7" y2="20"/><path d="M7 4h6a4 4 0 0 1 0 8H7"/><line x1="4" y1="10" x2="14" y2="10"/><line x1="4" y1="13" x2="14" y2="13"/></svg>',
+  users:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  snow:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="17" y1="5" x2="7" y2="19"/><line x1="7" y1="5" x2="17" y2="19"/></svg>',
+  alert:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  truck:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+};
+// migrate older single-item records to the items[] shape
+pr.forEach(r=>{ if(!r.items) r.items=[{id:uid(), item:r.item||'', qty:r.qty||0}]; });
+proc.forEach(r=>{ if(!r.items) r.items=[{id:uid(), item:r.item||'', category:r.category||'', qty:r.qty||0, cost:r.cost||0}]; });
+cv.forEach(r=>{
+  if(!r.items){
+    const itemId = uid();
+    r.items = [{id:itemId, item:r.item||'', qty:r.qty||0}];
+    r.suppliers = (r.quotes||[]).map(q=>({id:uid(), name:q.supplier||''}));
+    r.prices = { [itemId]: {} };
+    r.suppliers.forEach((s,idx)=>{ r.prices[itemId][s.id] = (r.quotes[idx]||{}).price || 0; });
+    r.winners = {};
+    if(r.winnerId){
+      const qIdx = (r.quotes||[]).findIndex(q=>q.id===r.winnerId);
+      if(qIdx>-1 && r.suppliers[qIdx]) r.winners[itemId] = r.suppliers[qIdx].id;
+    }
+    delete r.item; delete r.qty; delete r.quotes; delete r.winnerId;
+  }
+});
+save('pr',pr); save('proc',proc); save('cv',cv);
+// older Delivered POs predate stock tracking: treat them as already accounted for
+proc.forEach(p=>{ if(p.status==='Delivered' && p.stockApplied===undefined) p.stockApplied=true; });
+save('proc',proc);
+// backfill item catalog & price history from existing purchase orders, once
+if(!catalog.length && !priceHistory.length && proc.length){
+  proc.forEach(p=>{
+    (p.items||[]).forEach(it=>{
+      if(!it.item) return;
+      if(!catalog.some(c=>c.name.toLowerCase()===it.item.toLowerCase())) catalog.push({id:uid(), name:it.item});
+      if(p.supplier && +it.cost>0) priceHistory.push({id:uid(), item:it.item, supplier:p.supplier, price:+it.cost, date:p.date||p.updatedAt||'', poNo:p.poNo, branch:p.branch});
+    });
+  });
+  save('catalog',catalog); save('priceHistory',priceHistory);
+}
+
+// subnav (Purchase Requests / Purchase Orders / Suppliers within Procurement)
+document.querySelectorAll('.subnav button').forEach(b=>b.addEventListener('click',()=>{
+  const parent = b.closest('.subnav');
+  parent.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  parent.parentElement.querySelectorAll('.subsection').forEach(x=>x.classList.remove('active'));
+  document.getElementById(b.dataset.sub).classList.add('active');
+}));
+
+// tabs
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); document.getElementById(b.dataset.tab).classList.add('active');
+  if(b.dataset.tab==='reports') buildReports();
+  if(b.dataset.tab==='dashboard') buildDashboard();
+  if(b.dataset.tab==='inventory') renderInventory();
+}));
+function togglePrManual(){
+  const manual = document.querySelector('input[name="pr-numbering"]:checked').value==='manual';
+  document.getElementById('pr-manual-wrap').style.display = manual?'flex':'none';
+}
+function toggleProcManual(){
+  const manual = document.querySelector('input[name="proc-numbering"]:checked').value==='manual';
+  document.getElementById('proc-manual-wrap').style.display = manual?'flex':'none';
+}
+
+function branchOptions(sel, includeAll){
+  const opts = (includeAll?['<option value="">All branches</option>']:[]).concat(br.map(b=>`<option value="${b.name}">${b.name}</option>`));
+  sel.innerHTML = opts.join('') || '<option value="">Add a branch first</option>';
+}
+function refreshBranchSelects(){
+  branchOptions(document.getElementById('proc-branch'), false);
+  branchOptions(document.getElementById('ac-branch'), false);
+  branchOptions(document.getElementById('pr-branch'), false);
+  branchOptions(document.getElementById('cv-branch'), false);
+  branchOptions(document.getElementById('proc-filter'), true);
+  branchOptions(document.getElementById('ac-filter'), true);
+  branchOptions(document.getElementById('pr-filter'), true);
+  branchOptions(document.getElementById('cv-filter'), true);
+}
+function supplierOptions(){
+  const opts = sup.length? sup.map(s=>`<option value="${s.name}">${s.name}</option>`).join('') : '<option value="">Add a supplier first</option>';
+  ['proc-supplier','ac-provider'].forEach(id=>{
+    const sel = document.getElementById(id); if(!sel) return;
+    const current = sel.value;
+    sel.innerHTML = opts;
+    if(current) sel.value = current;
+  });
+}
+function userOptions(){
+  const opts = '<option value="">— Select —</option>' + (users.length? users.map(u=>`<option value="${u.name}">${u.name}${u.role?' ('+u.role+')':''}</option>`).join('') : '');
+  ['pr-preparedby','pr-checkedby','pr-approvedby','proc-preparedby','proc-checkedby','proc-approvedby'].forEach(id=>{
+    const sel = document.getElementById(id); if(!sel) return;
+    const current = sel.value;
+    sel.innerHTML = opts;
+    if(current) sel.value = current;
+  });
+}
+
+// USERS (people who can be selected as Prepared/Checked/Approved by)
+function resetUser(){ document.getElementById('user-id').value='';
+  document.getElementById('user-name').value=''; document.getElementById('user-role').value='';
+  document.getElementById('user-form-title').textContent='Add user';
+}
+function saveUser(){
+  const id = document.getElementById('user-id').value || uid();
+  const rec = { id, name:document.getElementById('user-name').value.trim(), role:document.getElementById('user-role').value.trim() };
+  if(!rec.name) return notify('Full name is required.');
+  const i = users.findIndex(u=>u.id===id);
+  if(i>-1) users[i]=rec; else users.push(rec);
+  save('users',users); resetUser(); renderUsers(); userOptions();
+}
+function editUser(id){ const r=users.find(u=>u.id===id); if(!r) return;
+  document.getElementById('user-id').value=r.id; document.getElementById('user-name').value=r.name; document.getElementById('user-role').value=r.role;
+  document.getElementById('user-form-title').textContent='Edit user';
+}
+function delUser(id){ confirmThen('Remove this user?', ()=>{ users=users.filter(u=>u.id!==id); save('users',users); renderUsers(); userOptions(); }); }
+function renderUsers(){
+  const tb = document.querySelector('#user-table tbody');
+  const q = (document.getElementById('user-search')?.value||'').trim();
+  const rows = users.filter(u=>matchSearch(q, u.name, u.role));
+  tb.innerHTML = rows.length? rows.map(u=>`<tr>
+    <td>${u.name}</td><td>${u.role||'—'}</td>
+    <td class="actions"><button onclick="editUser('${u.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Edit</button><button class="del" onclick="delUser('${u.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete</button></td>
+  </tr>`).join('') : `<tr><td colspan="3" class="empty">${users.length? 'No users match your search.' : 'No users added yet — add the people who prepare, check, and approve documents.'}</td></tr>`;
+}
+
+// SECURITY (local screen lock only — not real authentication)
+function loadSecurity(){ try{ const r=localStorage.getItem('appSecurity'); return r?JSON.parse(r):{enabled:false,pin:''}; }catch(e){ return {enabled:false,pin:''}; } }
+function fillSecurityForm(){
+  const s = loadSecurity();
+  document.getElementById('sec-enabled').value = s.enabled? '1':'0';
+  document.getElementById('sec-pin').value = s.pin||'';
+}
+function saveSecurity(){
+  const enabled = document.getElementById('sec-enabled').value==='1';
+  const pin = document.getElementById('sec-pin').value.trim();
+  if(enabled && !/^\d{4,8}$/.test(pin)) return notify('Enter a PIN of 4 to 8 digits, or switch this Off.');
+  localStorage.setItem('appSecurity', JSON.stringify({enabled,pin}));
+  document.getElementById('lock-btn').style.display = enabled? 'inline-flex':'none';
+  notify('Security settings saved.');
+}
+function checkLogin(){
+  const s = loadSecurity();
+  document.getElementById('lock-btn').style.display = s.enabled? 'inline-flex':'none';
+  if(s.enabled){
+    document.getElementById('lock-overlay').style.display='flex';
+    document.getElementById('lock-input').value='';
+  }
+}
+function tryUnlock(){
+  const s = loadSecurity();
+  const val = document.getElementById('lock-input').value.trim();
+  if(val===s.pin){
+    document.getElementById('lock-overlay').style.display='none';
+    document.getElementById('lock-error').style.display='none';
+  } else {
+    document.getElementById('lock-error').style.display='block';
+  }
+}
+function lockApp(){ document.getElementById('lock-overlay').style.display='flex'; document.getElementById('lock-input').value=''; document.getElementById('lock-error').style.display='none'; }
+
+// PURCHASE ORDERS (proc)
+let poDraftItems = [];
+function addPoItemRow(item='', category='', qty=1, cost=0){
+  poDraftItems.push({id:uid(), item, category, qty, cost});
+  renderPoItemRows();
+}
+function removePoItemRow(id){ poDraftItems = poDraftItems.filter(r=>r.id!==id); renderPoItemRows(); }
+function updatePoItemRow(id, field, val){ const r=poDraftItems.find(x=>x.id===id); if(r) r[field]=val; }
+function renderPoItemRows(){
+  const c = document.getElementById('proc-items');
+  c.innerHTML = poDraftItems.length? poDraftItems.map(r=>`<div class="lineitem po">
+    <input list="item-catalog-list" placeholder="Item" value="${escAttr(r.item)}" oninput="updatePoItemRow('${r.id}','item',this.value)" onchange="autofillPoItem('${r.id}')">
+    <input placeholder="Category" list="cat-list" value="${escAttr(r.category)}" oninput="updatePoItemRow('${r.id}','category',this.value)">
+    <input type="number" min="0" placeholder="Qty" value="${r.qty}" oninput="updatePoItemRow('${r.id}','qty',+this.value)">
+    <input type="number" min="0" step="0.01" placeholder="Unit cost ₱" value="${r.cost}" title="${escAttr(priceHint(r.item, document.getElementById('proc-supplier').value))}" oninput="updatePoItemRow('${r.id}','cost',+this.value)">
+    <button class="rm" onclick="removePoItemRow('${r.id}')">✕</button>
+  </div>`).join('') : '<div class="empty" style="padding:4px 0">No items yet — click "+ Add item".</div>';
+}
+function resetProc(){ document.getElementById('proc-id').value='';
+  ['prno','date','manual-no'].forEach(f=>document.getElementById('proc-'+f).value='');
+  document.getElementById('proc-status').value='Requested';
+  ['proc-preparedby','proc-checkedby','proc-approvedby'].forEach(id=>document.getElementById(id).value='');
+  document.querySelector('input[name="proc-numbering"][value="auto"]').checked = true;
+  document.getElementById('proc-manual-wrap').style.display='none';
+  document.getElementById('proc-form-title').textContent='New purchase order';
+  poDraftItems = []; addPoItemRow(); renderPoItemRows();
+}
+// ITEM CATALOG & PRICE MONITORING
+function normalizeItemName(raw){
+  const trimmed = String(raw||'').trim();
+  if(!trimmed) return trimmed;
+  const match = catalog.find(c=>c.name.toLowerCase()===trimmed.toLowerCase());
+  if(match) return match.name;
+  catalog.push({ id: uid(), name: trimmed });
+  save('catalog', catalog);
+  populateItemCatalogList();
+  return trimmed;
+}
+function recordPriceHistory(poRec){
+  if(!poRec.supplier || poRec.status==='Cancelled') return;
+  (poRec.items||[]).forEach(it=>{
+    if(!it.item || !(+it.cost>0)) return;
+    const dup = priceHistory.find(h=>h.poNo===poRec.poNo && h.item===it.item && h.supplier===poRec.supplier);
+    if(dup){ dup.price=+it.cost; dup.date=poRec.date||today(); dup.branch=poRec.branch; return; }
+    priceHistory.push({ id: uid(), item: it.item, supplier: poRec.supplier, price: +it.cost, date: poRec.date||today(), poNo: poRec.poNo, branch: poRec.branch });
+  });
+  save('priceHistory', priceHistory);
+}
+function populateItemCatalogList(){
+  const dl = document.getElementById('item-catalog-list'); if(!dl) return;
+  dl.innerHTML = catalog.map(c=>`<option value="${escAttr(c.name)}">`).join('');
+}
+function saveProc(){
+  const id = document.getElementById('proc-id').value || uid();
+  const existing = proc.find(p=>p.id===id);
+  const items = poDraftItems.filter(r=>r.item.trim()).map(r=>({id:r.id, item:normalizeItemName(r.item), category:r.category, qty:+r.qty||0, cost:+r.cost||0}));
+  if(!items.length) return notify('Add at least one item.'); snapNames(items);
+  const mode = document.querySelector('input[name="proc-numbering"]:checked').value;
+  let poNo;
+  if(existing){ poNo = existing.poNo; if(mode==='manual'){ const m=document.getElementById('proc-manual-no').value.trim(); if(m) poNo=m; } }
+  else if(mode==='manual'){
+    const m=document.getElementById('proc-manual-no').value.trim();
+    if(!m) return notify('Enter a PO number or switch to Automatic.');
+    if(proc.some(p=>p.poNo===m)) return notify('That PO number is already used.');
+    poNo=m;
+  } else poNo = nextCode(proc,'poNo','PO');
+  const rec = { id, poNo, prno:document.getElementById('proc-prno').value,
+    branch:document.getElementById('proc-branch').value, supplier:document.getElementById('proc-supplier').value,
+    date:document.getElementById('proc-date').value, status:document.getElementById('proc-status').value,
+    updatedAt: today(), items,
+    preparedBy:document.getElementById('proc-preparedby').value, checkedBy:document.getElementById('proc-checkedby').value,
+    approvedBy:document.getElementById('proc-approvedby').value };
+  if(!rec.branch) return notify('Branch is required.');
+  const i = proc.findIndex(p=>p.id===id);
+  if(i>-1) proc[i]=rec; else proc.push(rec);
+  if(existing && existing.stockApplied) reverseStock(existing);
+  rec.stockApplied = false; syncStock(rec);
+  if(existing) priceHistory = priceHistory.filter(h=>h.poNo!==existing.poNo);
+  rec.items.forEach(it=>{ const c=findCatalog(it.item); if(c && !c.category && it.category) c.category=it.category; });
+  save('catalog',catalog);
+  recordPriceHistory(rec);
+  save('proc',proc); resetProc(); renderProc(); renderSup(); renderInventory();
+}
+function today(){ return new Date().toISOString().slice(0,10); }
+function quickStatus(id, status){
+  const p = proc.find(x=>x.id===id); if(!p) return;
+  p.status = status; p.updatedAt = today();
+  syncStock(p);
+  priceHistory = priceHistory.filter(h=>h.poNo!==p.poNo); recordPriceHistory(p);
+  save('proc',proc); renderProc(); renderInventory();
+}
+function daysSince(dateStr){
+  if(!dateStr) return null;
+  return Math.floor((Date.now() - new Date(dateStr).getTime())/86400000);
+}
+function editProc(id){ const r=proc.find(p=>p.id===id); if(!r) return;
+  document.getElementById('proc-id').value=r.id; document.getElementById('proc-branch').value=r.branch;
+  document.getElementById('proc-prno').value=r.prno||''; document.getElementById('proc-supplier').value=r.supplier;
+  document.getElementById('proc-date').value=r.date; document.getElementById('proc-status').value=r.status;
+  document.getElementById('proc-preparedby').value=r.preparedBy||''; document.getElementById('proc-checkedby').value=r.checkedBy||'';
+  document.getElementById('proc-approvedby').value=r.approvedBy||'';
+  document.querySelector('input[name="proc-numbering"][value="manual"]').checked = true;
+  document.getElementById('proc-manual-wrap').style.display='flex';
+  document.getElementById('proc-manual-no').value = r.poNo;
+  poDraftItems = (r.items||[]).map(i=>({...i})); renderPoItemRows();
+  document.getElementById('proc-form-title').textContent='Edit purchase order '+r.poNo;
+}
+function delProc(id){ confirmThen('Delete this purchase order?', ()=>{ const gone=proc.find(p=>p.id===id); if(gone){ if(gone.stockApplied) reverseStock(gone); priceHistory=priceHistory.filter(h=>h.poNo!==gone.poNo); save('priceHistory',priceHistory); save('catalog',catalog); } proc=proc.filter(p=>p.id!==id); save('proc',proc); renderProc(); renderSup(); renderInventory(); }); }
+const PROC_STATUSES = ['Requested','Ordered','Delivered','Cancelled'];
+const BR_STAGES = ['Planning','Site acquired','Fit-out','Pre-opening','Operational'];
+function procStatusPill(s, stale){
+  const cls = s==='Delivered'?'ok': s==='Cancelled'?'':(stale?'warn':'plan');
+  return `<span class="pill ${cls}">${s}${stale?' ⚠':''}</span>`;
+}
+function itemsSummary(items){
+  return (items||[]).map(i=>`${i.item} ×${i.qty}`).join(', ') || '—';
+}
+function poTotals(p){
+  const items = p.items||[];
+  return { qty: items.reduce((s,i)=>s+(+i.qty||0),0), cost: items.reduce((s,i)=>s+(+i.qty||0)*(+i.cost||0),0) };
+}
+function renderProc(){
+  const f = document.getElementById('proc-filter').value;
+  const q = (document.getElementById('proc-search').value||'').trim();
+  const rows = proc.filter(p=>(!f||p.branch===f) && matchSearch(q, p.poNo, p.prno, p.supplier, p.status, itemsSummary(p.items)));
+  const tb = document.querySelector('#proc-table tbody');
+  tb.innerHTML = rows.length? rows.map(p=>{
+    const age = daysSince(p.updatedAt);
+    const stale = age!==null && age>=14 && p.status!=='Delivered' && p.status!=='Cancelled';
+    const opts = PROC_STATUSES.map(s=>`<option value="${s}" ${s===p.status?'selected':''}>${s}</option>`).join('');
+    const t = poTotals(p);
+    return `<tr>
+    <td class="badge">${p.poNo||'—'}</td><td class="badge">${p.prno||'—'}</td>
+    <td>${p.branch}</td><td>${itemsSummary(p.items)}</td><td>${p.supplier||'—'}</td>
+    <td>${t.qty}</td><td>₱${t.cost.toLocaleString('en-PH',{minimumFractionDigits:2})}</td><td>${p.date||'—'}</td>
+    <td><select onchange="quickStatus('${p.id}', this.value)">${opts}</select>${stale?'<div style="margin-top:3px">'+procStatusPill(p.status,true)+'</div>':''}</td>
+    <td>${p.updatedAt||'—'}</td>
+    <td class="actions"><button onclick="printRecord('po','${p.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print</button><button onclick="exportPdfRecord('po','${p.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button><button onclick="editProc('${p.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Edit</button><button class="del" onclick="delProc('${p.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete</button></td>
+  </tr>`;
+  }).join('') : '<tr><td colspan="11" class="empty">No purchase orders yet.</td></tr>';
+  buildProcStatusCards();
+}
+function buildProcStatusCards(){
+  const el = document.getElementById('proc-status-cards'); if(!el) return;
+  const counts = {}; PROC_STATUSES.forEach(s=>counts[s]=0);
+  let stalled = 0;
+  proc.forEach(p=>{
+    counts[p.status] = (counts[p.status]||0)+1;
+    const age = daysSince(p.updatedAt);
+    if(age!==null && age>=14 && p.status!=='Delivered' && p.status!=='Cancelled') stalled++;
+  });
+  el.innerHTML = PROC_STATUSES.map(s=>statCard(ICN.cart, counts[s], s)).join('')
+    + statCard(ICN.alert, stalled, 'Stalled 14+ days');
+}
+
+// PURCHASE REQUESTS
+let prDraftItems = [];
+function addPrItemRow(item='', qty=1){
+  prDraftItems.push({id:uid(), item, qty});
+  renderPrItemRows();
+}
+function removePrItemRow(id){ prDraftItems = prDraftItems.filter(r=>r.id!==id); renderPrItemRows(); }
+function updatePrItemRow(id, field, val){ const r=prDraftItems.find(x=>x.id===id); if(r) r[field]=val; }
+function renderPrItemRows(){
+  const c = document.getElementById('pr-items');
+  c.innerHTML = prDraftItems.length? prDraftItems.map(r=>`<div class="lineitem">
+    <input list="item-catalog-list" placeholder="Item" value="${escAttr(r.item)}" oninput="updatePrItemRow('${r.id}','item',this.value)">
+    <input type="number" min="0" placeholder="Qty" value="${r.qty}" oninput="updatePrItemRow('${r.id}','qty',+this.value)">
+    <button class="rm" onclick="removePrItemRow('${r.id}')">✕</button>
+  </div>`).join('') : '<div class="empty" style="padding:4px 0">No items yet — click "+ Add item".</div>';
+}
+function resetPr(){ document.getElementById('pr-id').value='';
+  ['by','date','manual-no'].forEach(f=>document.getElementById('pr-'+f).value='');
+  document.getElementById('pr-priority').value='Normal';
+  document.getElementById('pr-status').value='Pending';
+  ['pr-preparedby','pr-checkedby','pr-approvedby'].forEach(id=>document.getElementById(id).value='');
+  document.querySelector('input[name="pr-numbering"][value="auto"]').checked = true;
+  document.getElementById('pr-manual-wrap').style.display='none';
+  document.getElementById('pr-form-title').textContent='New purchase request';
+  prDraftItems = []; addPrItemRow(); renderPrItemRows();
+}
+function savePr(){
+  const id = document.getElementById('pr-id').value || uid();
+  const existing = pr.find(x=>x.id===id);
+  const items = prDraftItems.filter(r=>r.item.trim()).map(r=>({id:r.id, item:r.item.trim(), qty:+r.qty||0}));
+  if(!items.length) return notify('Add at least one item.'); snapNames(items);
+  const mode = document.querySelector('input[name="pr-numbering"]:checked').value;
+  let prNo;
+  if(existing){ prNo = existing.prNo; if(mode==='manual'){ const m=document.getElementById('pr-manual-no').value.trim(); if(m) prNo=m; } }
+  else if(mode==='manual'){
+    const m=document.getElementById('pr-manual-no').value.trim();
+    if(!m) return notify('Enter a PR number or switch to Automatic.');
+    if(pr.some(x=>x.prNo===m)) return notify('That PR number is already used.');
+    prNo=m;
+  } else prNo = nextCode(pr,'prNo','PR');
+  const rec = { id, prNo, branch:document.getElementById('pr-branch').value,
+    by:document.getElementById('pr-by').value, date:document.getElementById('pr-date').value,
+    priority:document.getElementById('pr-priority').value, status:document.getElementById('pr-status').value, items,
+    preparedBy:document.getElementById('pr-preparedby').value, checkedBy:document.getElementById('pr-checkedby').value,
+    approvedBy:document.getElementById('pr-approvedby').value };
+  if(!rec.branch) return notify('Branch is required.');
+  const i = pr.findIndex(x=>x.id===id);
+  if(i>-1) pr[i]=rec; else pr.push(rec);
+  save('pr',pr); resetPr(); renderPr();
+}
+function editPr(id){ const r=pr.find(x=>x.id===id); if(!r) return;
+  document.getElementById('pr-id').value=r.id; document.getElementById('pr-branch').value=r.branch;
+  document.getElementById('pr-by').value=r.by; document.getElementById('pr-date').value=r.date;
+  document.getElementById('pr-priority').value=r.priority; document.getElementById('pr-status').value=r.status;
+  document.getElementById('pr-preparedby').value=r.preparedBy||''; document.getElementById('pr-checkedby').value=r.checkedBy||'';
+  document.getElementById('pr-approvedby').value=r.approvedBy||'';
+  document.querySelector('input[name="pr-numbering"][value="manual"]').checked = true;
+  document.getElementById('pr-manual-wrap').style.display='flex';
+  document.getElementById('pr-manual-no').value = r.prNo;
+  prDraftItems = (r.items||[]).map(i=>({...i})); renderPrItemRows();
+  document.getElementById('pr-form-title').textContent='Edit '+r.prNo;
+}
+function delPr(id){ confirmThen('Delete this request?', ()=>{ pr=pr.filter(x=>x.id!==id); save('pr',pr); renderPr(); }); }
+function convertToPO(id){
+  const r = pr.find(x=>x.id===id); if(!r) return;
+  r.status='Converted to PO'; save('pr',pr); renderPr();
+  document.querySelector('.subnav button[data-sub="po"]').click();
+  resetProc();
+  document.getElementById('proc-branch').value = r.branch;
+  document.getElementById('proc-prno').value = r.prNo;
+  poDraftItems = (r.items||[]).map(i=>({id:uid(), item:i.item, category:'', qty:i.qty, cost:0}));
+  renderPoItemRows();
+  document.getElementById('proc-form-title').textContent='New purchase order (from '+r.prNo+')';
+}
+function priorityPill(p){ return `<span class="pill ${p==='Urgent'?'warn':''}">${p}</span>`; }
+function prStatusPill(s){
+  const cls = s==='Approved'?'ok': s==='Rejected'?'':(s==='Converted to PO'?'plan':'warn');
+  return `<span class="pill ${cls}">${s}</span>`;
+}
+function renderPr(){
+  const f = document.getElementById('pr-filter').value;
+  const q = (document.getElementById('pr-search').value||'').trim();
+  const rows = pr.filter(x=>(!f||x.branch===f) && matchSearch(q, x.prNo, x.by, x.priority, x.status, itemsSummary(x.items)));
+  const tb = document.querySelector('#pr-table tbody');
+  tb.innerHTML = rows.length? rows.map(r=>`<tr>
+    <td class="badge">${r.prNo}</td><td>${r.branch}</td><td>${itemsSummary(r.items)}</td><td>${r.by||'—'}</td><td>${r.date||'—'}</td>
+    <td>${priorityPill(r.priority)}</td><td>${prStatusPill(r.status)}</td>
+    <td class="actions"><button onclick="convertPrToCanvass('${r.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>To Canvass</button>${r.status!=='Converted to PO'?`<button onclick="convertToPO('${r.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>To PO</button>`:''}<button onclick="printRecord('pr','${r.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print</button><button onclick="exportPdfRecord('pr','${r.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button><button onclick="editPr('${r.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Edit</button><button class="del" onclick="delPr('${r.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete</button></td>
+  </tr>`).join('') : '<tr><td colspan="8" class="empty">No purchase requests yet.</td></tr>';
+  populateCvPrSelect();
+}
+
+// SUPPLIER / PROVIDER MONITORING
+function resetSup(){ document.getElementById('sup-id').value='';
+  ['name','category','contact','phone','email'].forEach(f=>document.getElementById('sup-'+f).value='');
+  document.getElementById('sup-rating').value='Good'; document.getElementById('sup-status').value='Active';
+  document.getElementById('sup-form-title').textContent='Add supplier';
+}
+function saveSup(){
+  const id = document.getElementById('sup-id').value || uid();
+  const rec = { id, name:document.getElementById('sup-name').value, category:document.getElementById('sup-category').value,
+    contact:document.getElementById('sup-contact').value, phone:document.getElementById('sup-phone').value,
+    email:document.getElementById('sup-email').value, rating:document.getElementById('sup-rating').value,
+    status:document.getElementById('sup-status').value };
+  if(!rec.name) return notify('Supplier name is required.');
+  const i = sup.findIndex(x=>x.id===id);
+  if(i>-1) sup[i]=rec; else sup.push(rec);
+  save('sup',sup); resetSup(); renderSup(); supplierOptions();
+}
+function editSup(id){ const r=sup.find(x=>x.id===id); if(!r) return;
+  document.getElementById('sup-id').value=r.id; document.getElementById('sup-name').value=r.name;
+  document.getElementById('sup-category').value=r.category; document.getElementById('sup-contact').value=r.contact;
+  document.getElementById('sup-phone').value=r.phone; document.getElementById('sup-email').value=r.email;
+  document.getElementById('sup-rating').value=r.rating; document.getElementById('sup-status').value=r.status;
+  document.getElementById('sup-form-title').textContent='Edit supplier';
+}
+function delSup(id){ confirmThen('Delete this supplier?', ()=>{ sup=sup.filter(x=>x.id!==id); save('sup',sup); renderSup(); supplierOptions(); }); }
+function ratingPill(r){ const cls = r==='Excellent'?'ok': r==='Poor'?'':(r==='Good'?'plan':'warn'); return `<span class="pill ${cls}">${r}</span>`; }
+function renderSup(){
+  const tb = document.querySelector('#sup-table tbody');
+  const q = (document.getElementById('sup-search')?.value||'').trim();
+  const rows = sup.filter(s=>matchSearch(q, s.name, s.category, s.contact, s.phone, s.email));
+  tb.innerHTML = rows.length? rows.map(s=>{
+    const orders = proc.filter(p=>p.supplier===s.name);
+    const total = orders.reduce((sum,p)=>sum+poTotals(p).cost,0);
+    return `<tr>
+      <td>${s.name}</td><td>${s.category||'—'}</td><td>${s.contact||'—'}${s.phone?' · '+s.phone:''}</td>
+      <td>${ratingPill(s.rating)}</td><td><span class="pill ${s.status==='Active'?'ok':''}">${s.status}</span></td>
+      <td>${orders.length}</td><td>₱${total.toLocaleString('en-PH',{minimumFractionDigits:2})}</td>
+      <td class="actions"><button onclick="editSup('${s.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Edit</button><button class="del" onclick="delSup('${s.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete</button></td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="8" class="empty">${sup.length? 'No suppliers match your search.' : 'No suppliers yet — add one to enable it on purchase orders.'}</td></tr>`;
+}
+
+// CANVASSING
+let cvDraftItems = [], cvDraftSuppliers = [], cvDraftPrices = {}, cvDraftWinners = {};
+function populateCvPrSelect(){
+  const sel = document.getElementById('cv-prno'); if(!sel) return;
+  const current = sel.value;
+  sel.innerHTML = '<option value="">— None —</option>' + pr.map(r=>`<option value="${r.prNo}">${r.prNo} — ${r.branch}</option>`).join('');
+  if(current) sel.value = current;
+}
+function fillCvFromPr(){
+  const prNo = document.getElementById('cv-prno').value;
+  if(!prNo) return;
+  const r = pr.find(x=>x.prNo===prNo);
+  if(!r) return;
+  document.getElementById('cv-branch').value = r.branch;
+  cvDraftItems = (r.items||[]).map(i=>({id:uid(), item:i.item, qty:i.qty}));
+  renderCvItemRows(); renderCvGrid();
+}
+function addCvItemRow(item='', qty=1){ cvDraftItems.push({id:uid(), item, qty}); renderCvItemRows(); renderCvGrid(); }
+function removeCvItemRow(id){ cvDraftItems = cvDraftItems.filter(r=>r.id!==id); delete cvDraftPrices[id]; delete cvDraftWinners[id]; renderCvItemRows(); renderCvGrid(); }
+function updateCvItemRow(id, field, val){ const r=cvDraftItems.find(x=>x.id===id); if(r){ r[field]=val; renderCvGrid(); } }
+function renderCvItemRows(){
+  const c = document.getElementById('cv-items');
+  c.innerHTML = cvDraftItems.length? cvDraftItems.map(r=>`<div class="lineitem">
+    <input list="item-catalog-list" placeholder="Item" value="${escAttr(r.item)}" oninput="updateCvItemRow('${r.id}','item',this.value)">
+    <input type="number" min="0" placeholder="Qty" value="${r.qty}" oninput="updateCvItemRow('${r.id}','qty',+this.value)">
+    <button class="rm" onclick="removeCvItemRow('${r.id}')">✕</button>
+  </div>`).join('') : '<div class="empty" style="padding:4px 0">No items yet — click "+ Add item".</div>';
+}
+function addCvSupplierCol(name=''){ cvDraftSuppliers.push({id:uid(), name}); renderCvGrid(); }
+function removeCvSupplierCol(id){
+  cvDraftSuppliers = cvDraftSuppliers.filter(s=>s.id!==id);
+  Object.keys(cvDraftPrices).forEach(iid=>{ if(cvDraftPrices[iid]) delete cvDraftPrices[iid][id]; });
+  Object.keys(cvDraftWinners).forEach(iid=>{ if(cvDraftWinners[iid]===id) delete cvDraftWinners[iid]; });
+  renderCvGrid();
+}
+function updateCvSupplierName(id, val){ const s=cvDraftSuppliers.find(x=>x.id===id); if(s) s.name=val; }
+function updateCvPrice(itemId, supplierId, val){ if(!cvDraftPrices[itemId]) cvDraftPrices[itemId]={}; cvDraftPrices[itemId][supplierId]=+val||0; }
+function setCvDraftWinner(itemId, supplierId){ if(supplierId) cvDraftWinners[itemId]=supplierId; else delete cvDraftWinners[itemId]; }
+function renderCvGrid(){
+  const el = document.getElementById('cv-grid');
+  if(!cvDraftItems.length || !cvDraftSuppliers.length){
+    el.innerHTML = '<div class="empty" style="padding:10px 0">Add at least one item and one supplier to compare quotes.</div>';
+    return;
+  }
+  const header = `<tr><th>Item</th>${cvDraftSuppliers.map(s=>`<th><div style="display:flex;gap:4px;align-items:center"><input placeholder="Supplier name" value="${escAttr(s.name)}" oninput="updateCvSupplierName('${s.id}',this.value)" style="width:110px"><button class="rm" onclick="removeCvSupplierCol('${s.id}')">✕</button></div></th>`).join('')}<th>Winner</th></tr>`;
+  const rows = cvDraftItems.map(it=>{
+    const cells = cvDraftSuppliers.map(s=>{
+      const val = (cvDraftPrices[it.id]||{})[s.id] ?? '';
+      return `<td><input type="number" min="0" step="0.01" placeholder="₱" value="${val}" oninput="updateCvPrice('${it.id}','${s.id}',this.value)" style="width:90px"></td>`;
+    }).join('');
+    const winOpts = '<option value="">—</option>' + cvDraftSuppliers.map(s=>`<option value="${s.id}" ${cvDraftWinners[it.id]===s.id?'selected':''}>${s.name||'Supplier'}</option>`).join('');
+    return `<tr><td>${it.item||'(item name)'} <span class="badge">×${it.qty}</span></td>${cells}<td><select onchange="setCvDraftWinner('${it.id}',this.value)">${winOpts}</select></td></tr>`;
+  }).join('');
+  el.innerHTML = `<table><thead>${header}</thead><tbody>${rows}</tbody></table>`;
+}
+function resetCv(){
+  document.getElementById('cv-id').value='';
+  document.getElementById('cv-date').value='';
+  populateCvPrSelect();
+  document.getElementById('cv-prno').value='';
+  document.getElementById('cv-form-title').textContent='New canvass sheet';
+  cvDraftItems=[]; cvDraftSuppliers=[]; cvDraftPrices={}; cvDraftWinners={};
+  addCvItemRow(); addCvSupplierCol(); addCvSupplierCol();
+  renderCvItemRows(); renderCvGrid();
+}
+function saveCv(){
+  const id = document.getElementById('cv-id').value || uid();
+  const existing = cv.find(x=>x.id===id);
+  const items = cvDraftItems.filter(r=>r.item.trim()).map(r=>({id:r.id, item:r.item.trim(), qty:+r.qty||0}));
+  if(!items.length) return notify('Add at least one item to canvass.'); snapNames(items);
+  const suppliers = cvDraftSuppliers.filter(s=>s.name.trim()).map(s=>({id:s.id, name:s.name.trim()}));
+  if(!suppliers.length) return notify('Add at least one supplier to compare.');
+  const itemIds = new Set(items.map(i=>i.id)), supplierIds = new Set(suppliers.map(s=>s.id));
+  const prices = {};
+  itemIds.forEach(iid=>{ if(cvDraftPrices[iid]){ prices[iid]={}; Object.keys(cvDraftPrices[iid]).forEach(sid=>{ if(supplierIds.has(sid)) prices[iid][sid]=cvDraftPrices[iid][sid]; }); } });
+  const winners = {};
+  itemIds.forEach(iid=>{ const w=cvDraftWinners[iid]; if(w && supplierIds.has(w)) winners[iid]=w; });
+  const cvNo = existing? existing.cvNo : nextCode(cv,'cvNo','CV');
+  const rec = { id, cvNo, branch:document.getElementById('cv-branch').value, prno:document.getElementById('cv-prno').value,
+    date:document.getElementById('cv-date').value, items, suppliers, prices, winners, status: existing? existing.status : 'Open' };
+  if(!rec.branch) return notify('Branch is required.');
+  const i = cv.findIndex(x=>x.id===id);
+  if(i>-1) cv[i]=rec; else cv.push(rec);
+  save('cv',cv); resetCv(); renderCv();
+}
+function editCv(id){ const r=cv.find(x=>x.id===id); if(!r) return;
+  document.getElementById('cv-id').value=r.id; document.getElementById('cv-branch').value=r.branch;
+  populateCvPrSelect(); document.getElementById('cv-prno').value=r.prno||'';
+  document.getElementById('cv-date').value=r.date;
+  cvDraftItems = (r.items||[]).map(i=>({...i}));
+  cvDraftSuppliers = (r.suppliers||[]).map(s=>({...s}));
+  cvDraftPrices = JSON.parse(JSON.stringify(r.prices||{}));
+  cvDraftWinners = {...(r.winners||{})};
+  renderCvItemRows(); renderCvGrid();
+  document.getElementById('cv-form-title').textContent='Edit '+r.cvNo;
+}
+function delCv(id){ confirmThen('Delete this canvass sheet?', ()=>{ cv=cv.filter(x=>x.id!==id); save('cv',cv); renderCv(); }); }
+function convertPrToCanvass(id){
+  const r = pr.find(x=>x.id===id); if(!r) return;
+  document.querySelector('.subnav button[data-sub="cv"]').click();
+  resetCv();
+  document.getElementById('cv-prno').value = r.prNo;
+  fillCvFromPr();
+  document.getElementById('cv-form-title').textContent = 'New canvass sheet (from '+r.prNo+')';
+}
+function generatePoFromCv(id){
+  const r = cv.find(x=>x.id===id); if(!r) return;
+  const groups = {}; let skipped = 0;
+  (r.items||[]).forEach(it=>{
+    const supId = r.winners? r.winners[it.id] : null;
+    if(!supId){ skipped++; return; }
+    const price = (r.prices[it.id]||{})[supId] || 0;
+    if(!groups[supId]) groups[supId]=[];
+    groups[supId].push({ id:uid(), item:it.item, category:'', qty:it.qty, cost:price });
+  });
+  const supplierIds = Object.keys(groups);
+  if(!supplierIds.length) return notify('Select a winning supplier for at least one item first.');
+  const createdPoNos = [];
+  supplierIds.forEach(sid=>{
+    const supplier = (r.suppliers||[]).find(s=>s.id===sid);
+    const poNo = nextCode(proc,'poNo','PO');
+    const poRec = { id:uid(), poNo, prno:r.prno||'', branch:r.branch, supplier: supplier? supplier.name : 'Unknown',
+      date: today(), status:'Requested', updatedAt: today(), items: groups[sid], preparedBy:'', checkedBy:'', approvedBy:'' };
+    poRec.items.forEach(it=>{ it.item=normalizeItemName(it.item); }); recordPriceHistory(poRec);
+    proc.push(poRec); createdPoNos.push(poNo);
+  });
+  save('proc',proc); renderProc(); renderSup();
+  r.status='Converted to PO'; save('cv',cv); renderCv();
+  notify(`Created ${createdPoNos.length} purchase order(s): ${createdPoNos.join(', ')}${skipped? '. '+skipped+' item(s) had no winner selected and were skipped.':''}`);
+  document.querySelector('.subnav button[data-sub="po"]').click();
+}
+function cvStatusPill(s){ const cls = s==='Converted to PO'?'ok':'plan'; return `<span class="pill ${cls}">${s}</span>`; }
+function renderCv(){
+  const f = document.getElementById('cv-filter').value;
+  const q = (document.getElementById('cv-search').value||'').trim();
+  const rows = cv.filter(x=>(!f||x.branch===f) && matchSearch(q, x.cvNo, x.prno, x.status, (x.items||[]).map(i=>i.item).join(' '), (x.suppliers||[]).map(s=>s.name).join(' ')));
+  const el = document.getElementById('cv-list');
+  el.innerHTML = rows.length? rows.map(r=>{
+    const items = r.items||[], suppliers = r.suppliers||[];
+    const header = `<tr><th>Item</th>${suppliers.map(s=>`<th>${s.name}</th>`).join('')}</tr>`;
+    const gridRows = items.map(it=>{
+      const rowPrices = suppliers.map(s=>(r.prices[it.id]||{})[s.id]);
+      const valid = rowPrices.filter(p=>p!=null && p>0);
+      const lowest = valid.length? Math.min(...valid) : null;
+      const cells = suppliers.map((s,idx)=>{
+        const p = rowPrices[idx];
+        const isWinner = r.winners && r.winners[it.id]===s.id;
+        const isLowest = p!=null && p===lowest;
+        return `<td class="r" style="${isWinner?'font-weight:700;color:var(--accent-dark)':''}">${p!=null?'₱'+(+p).toLocaleString('en-PH',{minimumFractionDigits:2}):'—'}${isLowest?' <span class="pill ok">Low</span>':''}${isWinner?' <span class="pill plan">Winner</span>':''}</td>`;
+      }).join('');
+      return `<tr><td>${it.item} <span class="badge">×${it.qty}</span></td>${cells}</tr>`;
+    }).join('');
+    return `<div class="cv-card">
+      <div class="cv-head">
+        <div><b class="badge">${r.cvNo}</b> · ${r.branch}${r.prno?' · Ref '+r.prno:''} · ${items.length} item(s)</div>
+        ${cvStatusPill(r.status)}
+      </div>
+      <div class="twrap"><table><thead>${header}</thead><tbody>${gridRows}</tbody></table></div>
+      <div class="btnrow" style="margin-top:10px">
+        <button class="ghost" onclick="editCv('${r.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Edit</button>
+        <button class="primary" onclick="generatePoFromCv('${r.id}')" ${r.status==='Converted to PO'?'disabled':''}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>Generate PO</button>
+        <button class="ghost" onclick="delCv('${r.id}')" style="color:var(--danger)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete</button>
+      </div>
+    </div>`;
+  }).join('') : '<div class="empty">No canvass sheets yet — add one to start comparing supplier quotes.</div>';
+}
+
+// INVENTORY / PRICE MONITORING
+const IC_EDIT='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+const IC_TRASH='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
+const peso = n => '₱'+(+n).toLocaleString('en-PH',{minimumFractionDigits:2});
+function findCatalog(name){ const k=String(name||'').trim().toLowerCase(); return k? catalog.find(c=>c.name.toLowerCase()===k) : null; }
+function snapNames(items){ (items||[]).forEach(i=>{ const c=findCatalog(i.item); i.item = c? c.name : String(i.item||'').trim(); }); }
+function populateCatList(){
+  const cl=document.getElementById('cat-list'); if(!cl) return;
+  cl.innerHTML=[...new Set(catalog.map(c=>c.category).filter(Boolean))].sort().map(x=>`<option value="${escAttr(x)}"></option>`).join('');
+}
+function itemPrices(name){
+  const k=String(name||'').trim().toLowerCase();
+  return priceHistory.filter(h=>h.item.toLowerCase()===k).slice().sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+}
+function priceHint(name, supplier){
+  const hist=itemPrices(name); if(!String(name||'').trim()) return '';
+  if(!hist.length) return 'No price history yet for this item';
+  const mine=hist.filter(h=>h.supplier===supplier), l=mine.length? mine[mine.length-1] : null;
+  const bySup={}; hist.forEach(h=>{ bySup[h.supplier]=h; });
+  const cheap=Object.values(bySup).reduce((a,b)=>b.price<a.price?b:a);
+  return (l? `Last from ${supplier}: ${peso(l.price)} (${l.date||'n/a'}). ` : '') + `Lowest current: ${peso(cheap.price)} (${cheap.supplier})`;
+}
+function autofillPoItem(id){
+  const r=poDraftItems.find(x=>x.id===id); if(!r) return;
+  const c=findCatalog(r.item); if(!c) return;
+  r.item=c.name;
+  if(!r.category) r.category=c.category||'';
+  const sup=document.getElementById('proc-supplier').value, hist=itemPrices(c.name);
+  const mine=hist.filter(h=>h.supplier===sup), pick=mine.length? mine[mine.length-1] : (hist.length? hist[hist.length-1] : null);
+  if(!(+r.cost) && pick) r.cost=pick.price;
+  renderPoItemRows();
+}
+// stock movements follow PO status (Delivered adds to On hand)
+function applyStock(p){ (p.items||[]).forEach(i=>{ const name=normalizeItemName(i.item), c=findCatalog(name); if(c) c.qty=(+c.qty||0)+(+i.qty||0); }); p.stockApplied=true; }
+function reverseStock(p){ (p.items||[]).forEach(i=>{ const c=findCatalog(i.item); if(c) c.qty=Math.max(0,(+c.qty||0)-(+i.qty||0)); }); p.stockApplied=false; }
+function syncStock(p){
+  if(p.status==='Delivered' && !p.stockApplied) applyStock(p);
+  else if(p.status!=='Delivered' && p.stockApplied) reverseStock(p);
+  save('catalog',catalog);
+}
+function resetInv(){
+  document.getElementById('inv-id').value='';
+  ['name','category','notes'].forEach(f=>document.getElementById('inv-'+f).value='');
+  document.getElementById('inv-unit').value='pcs'; document.getElementById('inv-qty').value=0; document.getElementById('inv-reorder').value=0;
+  document.getElementById('inv-form-title').textContent='Add inventory item';
+}
+function renameItemEverywhere(oldName, newName){
+  const k=oldName.toLowerCase();
+  [proc,pr,cv].forEach(arr=>arr.forEach(r=>(r.items||[]).forEach(i=>{ if(String(i.item||'').trim().toLowerCase()===k) i.item=newName; })));
+  priceHistory.forEach(h=>{ if(h.item.toLowerCase()===k) h.item=newName; });
+  save('proc',proc); save('pr',pr); save('cv',cv); save('priceHistory',priceHistory);
+  renderProc(); renderPr(); renderCv();
+}
+function saveInv(){
+  const id=document.getElementById('inv-id').value || uid();
+  const existing=catalog.find(c=>c.id===id);
+  const name=document.getElementById('inv-name').value.trim().replace(/\s+/g,' ');
+  if(!name) return notify('Item name is required.');
+  if(catalog.some(c=>c.id!==id && c.name.toLowerCase()===name.toLowerCase())) return notify('An item with that name already exists.');
+  const rec={ id, name, category:document.getElementById('inv-category').value.trim(), unit:document.getElementById('inv-unit').value.trim()||'pcs',
+    qty:+document.getElementById('inv-qty').value||0, reorder:+document.getElementById('inv-reorder').value||0, notes:document.getElementById('inv-notes').value };
+  if(existing && existing.name!==name) renameItemEverywhere(existing.name, name);
+  const i=catalog.findIndex(c=>c.id===id);
+  if(i>-1) catalog[i]=rec; else catalog.push(rec);
+  save('catalog',catalog); resetInv(); populateItemCatalogList(); populateCatList(); renderInventory();
+}
+function editInv(id){ const c=catalog.find(x=>x.id===id); if(!c) return;
+  document.getElementById('inv-id').value=c.id; document.getElementById('inv-name').value=c.name;
+  document.getElementById('inv-category').value=c.category||''; document.getElementById('inv-unit').value=c.unit||'pcs';
+  document.getElementById('inv-qty').value=c.qty||0; document.getElementById('inv-reorder').value=c.reorder||0; document.getElementById('inv-notes').value=c.notes||'';
+  document.getElementById('inv-form-title').textContent='Edit item';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function delInv(id){ confirmThen('Remove this item from the catalog? (It returns if you use it on a new Purchase Order.)', ()=>{ catalog=catalog.filter(c=>c.id!==id); save('catalog',catalog); populateItemCatalogList(); populateCatList(); renderInventory(); }); }
+let openInvHistory = null;
+function toggleInvHistory(id){ openInvHistory = openInvHistory===id ? null : id; renderInventory(); }
+function sparkline(g){
+  const W=340, H=110, P=10, colors=['#2f6f5e','#b9791f','#3d5a80','#a4432f','#7a5c99','#5c7a3d'];
+  const ts=e=> e.date? new Date(e.date).getTime() : Date.now();
+  const sups=[...new Set(g.map(e=>e.supplier))];
+  const tmin=Math.min(...g.map(ts)), tmax=Math.max(...g.map(ts)), pmin=Math.min(...g.map(e=>e.price)), pmax=Math.max(...g.map(e=>e.price));
+  const x=e=> tmax===tmin? W/2 : 60+(ts(e)-tmin)/(tmax-tmin)*(W-60-P);
+  const y=e=> pmax===pmin? H/2 : H-P-(e.price-pmin)/(pmax-pmin)*(H-2*P);
+  const lines=sups.map((s,idx)=>{
+    const arr=g.filter(e=>e.supplier===s), c=colors[idx%colors.length];
+    return (arr.length>1? `<polyline fill="none" stroke="${c}" stroke-width="2" points="${arr.map(e=>x(e)+','+y(e)).join(' ')}"/>` : '') + arr.map(e=>`<circle cx="${x(e)}" cy="${y(e)}" r="3.5" fill="${c}"><title>${s}: ${peso(e.price)} (${e.date||'n/a'})</title></circle>`).join('');
+  }).join('');
+  const legend=sups.map((s,idx)=>`<span style="color:${colors[idx%colors.length]}">● ${s}</span>`).join('');
+  return `<div style="color:var(--muted)"><svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px;height:auto"><text x="0" y="${P+3}" font-size="9" fill="currentColor">${peso(pmax)}</text><text x="0" y="${H-P+3}" font-size="9" fill="currentColor">${peso(pmin)}</text>${lines}</svg><div class="legend">${legend}</div></div>`;
+}
+function renderInventory(){
+  const tb = document.querySelector('#inv-table tbody'); if(!tb) return;
+  const q = (document.getElementById('inv-search')?.value||'').toLowerCase().trim();
+  const list = catalog.filter(c=>!q || c.name.toLowerCase().includes(q) || (c.category||'').toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name));
+  if(!list.length){ tb.innerHTML = `<tr><td colspan="9" class="empty">${catalog.length? 'No items match your search.' : 'No items yet — they are added automatically when you save a Purchase Order, or add one above.'}</td></tr>`; return; }
+  tb.innerHTML = list.map(c=>{
+    const hist = itemPrices(c.name);
+    const bySup={}; hist.forEach(h=>{ (bySup[h.supplier]=bySup[h.supplier]||[]).push(h); });
+    const latestPer = Object.entries(bySup).map(([s,arr])=>({s, e:arr[arr.length-1], arr}));
+    const last = hist.length? hist[hist.length-1] : null;
+    const best = latestPer.length? latestPer.reduce((a,b)=>b.e.price<a.e.price?b:a) : null;
+    let delta='';
+    if(last){ const same=bySup[last.supplier]; if(same.length>1){ const prev=same[same.length-2].price, pct=(last.price-prev)/prev*100;
+      delta = Math.abs(pct)<0.05? '' : ` <span class="pill ${pct>0?'warn':'ok'}">${pct>0?'▲':'▼'} ${Math.abs(pct).toFixed(1)}%</span>`; } }
+    const qty=+c.qty||0, out=qty<=0, low=!out && +c.reorder>0 && qty<=+c.reorder;
+    const pill = out? '<span class="pill warn">Out of stock</span>' : low? '<span class="pill warn">Low stock</span>' : '<span class="pill ok">In stock</span>';
+    const open = openInvHistory===c.id;
+    const mainRow = `<tr>
+      <td><b>${c.name}</b></td><td>${c.category||'—'}</td><td><b>${qty}</b> <span style="color:var(--muted)">${c.unit||''}</span></td><td>${pill}</td>
+      <td>${last? peso(last.price)+' <span class="badge">'+last.supplier+'</span>'+delta : '—'}</td>
+      <td>${best? peso(best.e.price)+' <span class="badge">'+best.s+'</span>' : '—'}</td>
+      <td>${latestPer.length}</td>
+      <td><button class="linkbtn" onclick="toggleInvHistory('${c.id}')">${hist.length} ${open?'▲':'▼'}</button></td>
+      <td class="actions"><button onclick="editInv('${c.id}')">${IC_EDIT}Edit</button><button class="del" onclick="delInv('${c.id}')">${IC_TRASH}Delete</button></td>
+    </tr>`;
+    if(!open) return mainRow;
+    if(!hist.length) return mainRow + `<tr class="checklist-row"><td colspan="9"><div class="checklist-box"><div class="empty" style="padding:4px 0">No price history yet — save a Purchase Order with a unit cost for this item.</div></div></td></tr>`;
+    const supRows = latestPer.slice().sort((a,b)=>a.e.price-b.e.price).map(({s,e,arr})=>{
+      const ps=arr.map(x=>x.price), avg=ps.reduce((a,b)=>a+b,0)/ps.length;
+      return `<tr><td>${s}${best && s===best.s?' <span class="pill ok">Lowest</span>':''}</td><td>${peso(e.price)}</td><td>${peso(Math.min(...ps))}</td><td>${peso(Math.max(...ps))}</td><td>${peso(avg)}</td><td>${arr.length}</td><td>${e.date||'—'}</td></tr>`;
+    }).join('');
+    const log = hist.slice().reverse().map(h=>`<div class="checklist-item"><span class="txt"><b>${h.date||'—'}</b> · ${h.supplier} · ${peso(h.price)}${h.poNo?' · '+h.poNo:''}</span></div>`).join('');
+    return mainRow + `<tr class="checklist-row"><td colspan="9"><div class="checklist-box">
+      <div class="twrap"><table><thead><tr><th>Supplier</th><th>Latest</th><th>Lowest</th><th>Highest</th><th>Average</th><th>Purchases</th><th>Last date</th></tr></thead><tbody>${supRows}</tbody></table></div>
+      <div style="margin-top:12px">${sparkline(hist)}</div>
+      <div style="margin-top:10px">${log}</div>
+    </div></td></tr>`;
+  }).join('');
+}
+
+// AIRCON
+function resetAc(){ document.getElementById('ac-id').value='';
+  ['unit','model','install','last','next'].forEach(f=>document.getElementById('ac-'+f).value='');
+  document.getElementById('ac-provider').value='';
+  document.getElementById('ac-interval').value=90;
+  document.getElementById('ac-status').value='Operational';
+  document.getElementById('ac-form-title').textContent='Add aircon unit';
+  showProviderContact();
+}
+function showProviderContact(){
+  const name = document.getElementById('ac-provider').value;
+  const el = document.getElementById('ac-provider-contact');
+  const s = sup.find(x=>x.name===name);
+  el.textContent = s? `Contact: ${s.contact||'—'}${s.phone?' · '+s.phone:''}${s.email?' · '+s.email:''}` : '';
+}
+function recalcNextDue(){
+  const last = document.getElementById('ac-last').value;
+  const interval = +document.getElementById('ac-interval').value || 0;
+  if(!last || !interval) return;
+  const d = new Date(last); d.setDate(d.getDate() + interval);
+  document.getElementById('ac-next').value = d.toISOString().slice(0,10);
+}
+function saveAc(){
+  const id = document.getElementById('ac-id').value || uid();
+  const rec = { id, branch:document.getElementById('ac-branch').value, unit:document.getElementById('ac-unit').value,
+    model:document.getElementById('ac-model').value, provider:document.getElementById('ac-provider').value,
+    install:document.getElementById('ac-install').value, last:document.getElementById('ac-last').value,
+    interval:+document.getElementById('ac-interval').value||0, next:document.getElementById('ac-next').value,
+    status:document.getElementById('ac-status').value };
+  if(!rec.unit||!rec.branch) return notify('Branch and unit/location are required.');
+  const i = ac.findIndex(a=>a.id===id);
+  if(i>-1) ac[i]=rec; else ac.push(rec);
+  save('ac',ac); resetAc(); renderAc();
+}
+function editAc(id){ const r=ac.find(a=>a.id===id); if(!r) return;
+  document.getElementById('ac-id').value=r.id; document.getElementById('ac-branch').value=r.branch;
+  document.getElementById('ac-unit').value=r.unit; document.getElementById('ac-model').value=r.model;
+  document.getElementById('ac-provider').value=r.provider||'';
+  document.getElementById('ac-install').value=r.install; document.getElementById('ac-last').value=r.last;
+  document.getElementById('ac-interval').value=r.interval||90;
+  document.getElementById('ac-next').value=r.next; document.getElementById('ac-status').value=r.status;
+  document.getElementById('ac-form-title').textContent='Edit aircon unit';
+  showProviderContact();
+}
+function delAc(id){ confirmThen('Delete this unit?', ()=>{ ac=ac.filter(a=>a.id!==id); save('ac',ac); renderAc(); }); }
+function statusPill(s){
+  const cls = s==='Operational'?'ok': (s==='Needs service'?'warn': (s==='Under repair'?'warn':''));
+  return `<span class="pill ${cls}">${s}</span>`;
+}
+function dueStatus(next){
+  if(!next) return 'Not scheduled';
+  return new Date(next) <= new Date(today()) ? 'Due for Service/Cleaning' : 'Not Yet Due for Service/Cleaning';
+}
+function duePill(next){
+  const s = dueStatus(next);
+  const cls = s==='Due for Service/Cleaning'?'warn': s==='Not scheduled'?'':'ok';
+  return `<span class="pill ${cls}">${s}</span>`;
+}
+let openAcHistory = null;
+function toggleAcHistory(id){ openAcHistory = openAcHistory===id ? null : id; renderAc(); }
+function recomputeFromHistory(a){
+  const hist = a.history||[];
+  if(!hist.length) return;
+  const latest = hist.reduce((max,h)=> h.date>max? h.date : max, '');
+  a.last = latest;
+  if(a.interval){ const d=new Date(latest); d.setDate(d.getDate()+(+a.interval||0)); a.next = d.toISOString().slice(0,10); }
+}
+function addAcHistory(id){
+  const a = ac.find(x=>x.id===id); if(!a) return;
+  const date = document.getElementById('ach-date-'+id).value;
+  if(!date) return notify('Pick a service date.');
+  if(!a.history) a.history=[];
+  a.history.push({ id:uid(), date, provider:document.getElementById('ach-provider-'+id).value, notes:document.getElementById('ach-notes-'+id).value });
+  recomputeFromHistory(a);
+  save('ac',ac); renderAc();
+}
+function delAcHistory(id, entryId){
+  const a = ac.find(x=>x.id===id); if(!a) return;
+  a.history = (a.history||[]).filter(h=>h.id!==entryId);
+  recomputeFromHistory(a);
+  save('ac',ac); renderAc();
+}
+function renderAc(){
+  const f = document.getElementById('ac-filter').value;
+  const q = (document.getElementById('ac-search')?.value||'').trim();
+  const rows = ac.filter(a=>(!f||a.branch===f) && matchSearch(q, a.unit, a.model, a.provider, a.branch));
+  const tb = document.querySelector('#ac-table tbody');
+  if(!rows.length){ tb.innerHTML = `<tr><td colspan="12" class="empty">${ac.length? 'No units match your search.' : 'No aircon units logged yet.'}</td></tr>`; return; }
+  tb.innerHTML = rows.map(a=>{
+    const s = sup.find(x=>x.name===a.provider);
+    const contact = s? `${s.contact||'—'}${s.phone?' · '+s.phone:''}` : '—';
+    const hist = a.history||[];
+    const mainRow = `<tr>
+    <td>${a.branch}</td><td>${a.unit}</td><td>${a.model||'—'}</td><td>${a.provider||'—'}</td><td>${contact}</td><td>${a.install||'—'}</td>
+    <td>${a.last||'—'}</td><td>${a.next||'—'}</td><td>${statusPill(a.status)}</td><td>${duePill(a.next)}</td>
+    <td><button class="linkbtn" onclick="toggleAcHistory('${a.id}')">${hist.length} ${openAcHistory===a.id?'▲':'▼'}</button></td>
+    <td class="actions"><button onclick="editAc('${a.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Edit</button><button class="del" onclick="delAc('${a.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete</button></td>
+  </tr>`;
+    if(openAcHistory!==a.id) return mainRow;
+    const items = hist.slice().sort((x,y)=> (y.date||'').localeCompare(x.date||'')).map(h=>`<div class="checklist-item">
+        <span class="txt"><b>${h.date}</b>${h.provider?' · '+h.provider:''}${h.notes?' — '+h.notes:''}</span>
+        <button class="linkbtn" style="color:var(--danger)" onclick="delAcHistory('${a.id}','${h.id}')">Remove</button>
+      </div>`).join('') || '<div class="empty" style="padding:4px 0">No service history logged yet.</div>';
+    const provOpts = '<option value="">Provider (optional)</option>' + sup.map(sp=>`<option ${sp.name===a.provider?'selected':''}>${sp.name}</option>`).join('');
+    const historyRow = `<tr class="checklist-row"><td colspan="12"><div class="checklist-box">
+        ${items}
+        <div class="checklist-add">
+          <input id="ach-date-${a.id}" type="date" value="${today()}" style="max-width:150px">
+          <select id="ach-provider-${a.id}">${provOpts}</select>
+          <input id="ach-notes-${a.id}" placeholder="Notes, e.g. Filter cleaned, gas topped up">
+          <button class="ghost" onclick="addAcHistory('${a.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Log service</button>
+        </div>
+      </div></td></tr>`;
+    return mainRow + historyRow;
+  }).join('');
+}
+
+// BRANCHES (expansion monitoring)
+function resetBr(){ document.getElementById('br-id').value='';
+  ['name','region','target','manager','phone','email','address','notes'].forEach(f=>document.getElementById('br-'+f).value='');
+  document.getElementById('br-stage').value='Planning';
+  document.getElementById('br-form-title').textContent='Add branch';
+}
+function saveBr(){
+  const id = document.getElementById('br-id').value || uid();
+  const existing = br.find(b=>b.id===id);
+  const rec = { id, name:document.getElementById('br-name').value, region:document.getElementById('br-region').value,
+    stage:document.getElementById('br-stage').value, target:document.getElementById('br-target').value,
+    manager:document.getElementById('br-manager').value, phone:document.getElementById('br-phone').value,
+    email:document.getElementById('br-email').value, address:document.getElementById('br-address').value,
+    notes:document.getElementById('br-notes').value, checklist: existing? existing.checklist : [] };
+  if(!rec.name) return notify('Branch name is required.');
+  const i = br.findIndex(b=>b.id===id);
+  if(i>-1) br[i]=rec; else br.push(rec);
+  save('br',br); resetBr(); renderBr(); refreshBranchSelects(); renderProc(); renderAc();
+}
+let openChecklist = null;
+function toggleChecklist(id){ openChecklist = openChecklist===id ? null : id; renderBr(); }
+function addChecklistItem(id){
+  const input = document.getElementById('cl-input-'+id);
+  const text = input.value.trim();
+  if(!text) return;
+  const b = br.find(x=>x.id===id); if(!b) return;
+  if(!b.checklist) b.checklist=[];
+  b.checklist.push({ id: uid(), text, done:false });
+  save('br',br); renderBr();
+}
+function toggleChecklistItem(id, itemId){
+  const b = br.find(x=>x.id===id); if(!b) return;
+  const it = b.checklist.find(c=>c.id===itemId); if(!it) return;
+  it.done = !it.done; save('br',br); renderBr();
+}
+function delChecklistItem(id, itemId){
+  const b = br.find(x=>x.id===id); if(!b) return;
+  b.checklist = b.checklist.filter(c=>c.id!==itemId);
+  save('br',br); renderBr();
+}
+function addPreset(id){
+  const b = br.find(x=>x.id===id); if(!b) return;
+  if(!b.checklist) b.checklist=[];
+  const preset = ['Lease/site agreement signed','Permits & business licenses secured','Fit-out & construction complete',
+    'Aircon & utilities installed and tested','Staff hired and trained','Stock & equipment delivered','Soft opening completed'];
+  preset.forEach(t=> b.checklist.push({ id: uid(), text:t, done:false }));
+  save('br',br); renderBr();
+}
+function editBr(id){ const r=br.find(b=>b.id===id); if(!r) return;
+  document.getElementById('br-id').value=r.id; document.getElementById('br-name').value=r.name;
+  document.getElementById('br-region').value=r.region; document.getElementById('br-stage').value=r.stage;
+  document.getElementById('br-target').value=r.target; document.getElementById('br-notes').value=r.notes;
+  document.getElementById('br-manager').value=r.manager||''; document.getElementById('br-phone').value=r.phone||'';
+  document.getElementById('br-email').value=r.email||''; document.getElementById('br-address').value=r.address||'';
+  document.getElementById('br-form-title').textContent='Edit branch';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function delBr(id){
+  confirmThen('Delete this branch? Its procurement/aircon records will stay but lose the branch link.', ()=>{
+    br=br.filter(b=>b.id!==id); save('br',br); renderBr(); refreshBranchSelects(); renderProc(); renderAc();
+  });
+}
+function stagePill(s){
+  const cls = s==='Operational'?'ok': (s==='Planning'?'plan':'warn');
+  return `<span class="pill ${cls}">${s}</span>`;
+}
+function renderBr(){
+  const tb = document.querySelector('#br-table tbody');
+  const q = (document.getElementById('br-search')?.value||'').trim();
+  const rows = br.filter(b=>matchSearch(q, b.name, b.region, b.manager, b.notes, b.stage));
+  if(!rows.length){ tb.innerHTML = `<tr><td colspan="9" class="empty">${br.length? 'No branches match your search.' : 'No branches yet — add one to start tracking expansion.'}</td></tr>`; return; }
+  tb.innerHTML = rows.map(b=>{
+    const list = b.checklist||[];
+    const done = list.filter(c=>c.done).length;
+    const pct = list.length? Math.round(done/list.length*100) : 0;
+    const contact = (b.phone||b.email) ? `${b.phone||''}${b.phone&&b.email?' · ':''}${b.email||''}` : '—';
+    const mainRow = `<tr>
+      <td>${b.name}</td><td>${b.region||'—'}</td><td>${stagePill(b.stage)}</td><td>${b.target||'—'}</td>
+      <td>${b.manager||'—'}</td><td>${contact}</td><td>${b.notes||'—'}</td>
+      <td><div class="progress"><button class="linkbtn" onclick="toggleChecklist('${b.id}')">${done}/${list.length} ${openChecklist===b.id?'▲':'▼'}</button><div class="bar"><span style="width:${pct}%"></span></div></div></td>
+      <td class="actions"><button onclick="editBr('${b.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Edit</button><button class="del" onclick="delBr('${b.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete</button></td>
+    </tr>`;
+    if(openChecklist!==b.id) return mainRow;
+    const items = list.map(it=>`<div class="checklist-item ${it.done?'done':''}">
+        <input type="checkbox" ${it.done?'checked':''} onchange="toggleChecklistItem('${b.id}','${it.id}')">
+        <span class="txt">${it.text}</span>
+        <button class="linkbtn" style="color:var(--danger)" onclick="delChecklistItem('${b.id}','${it.id}')">Remove</button>
+      </div>`).join('') || '<div class="empty" style="padding:4px 0">No checklist items yet.</div>';
+    const checklistRow = `<tr class="checklist-row"><td colspan="9"><div class="checklist-box">
+        ${items}
+        <div class="checklist-add">
+          <input id="cl-input-${b.id}" placeholder="Add a task to reach Operational, e.g. Install signage" onkeydown="if(event.key==='Enter')addChecklistItem('${b.id}')">
+          <button class="ghost" onclick="addChecklistItem('${b.id}')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add</button>
+          ${list.length===0?`<button class="ghost" onclick="addPreset('${b.id}')"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Use standard checklist</button>`:''}
+        </div>
+      </div></td></tr>`;
+    return mainRow + checklistRow;
+  }).join('');
+}
+
+// REPORTS
+function buildReports(){
+  const totalSpend = proc.reduce((s,p)=>s+poTotals(p).cost,0);
+  const needsService = ac.filter(a=>a.status==='Needs service'||a.status==='Under repair'||dueStatus(a.next)==='Due for Service/Cleaning').length;
+  const expanding = br.filter(b=>b.stage!=='Operational').length;
+  const pendingPr = pr.filter(x=>x.status==='Pending').length;
+  document.getElementById('stat-cards').innerHTML =
+    statCard(ICN.building, br.length, 'Branches tracked') +
+    statCard(ICN.snow, expanding, 'In expansion') +
+    statCard(ICN.fileText, pendingPr, 'Pending purchase requests') +
+    statCard(ICN.cart, proc.length, 'Purchase orders') +
+    statCard(ICN.peso, '₱'+totalSpend.toLocaleString('en-PH',{minimumFractionDigits:2}), 'Total procurement value') +
+    statCard(ICN.users, sup.length, 'Suppliers tracked') +
+    statCard(ICN.snow, ac.length, 'Aircon units') +
+    statCard(ICN.alert, needsService, 'Units needing attention');
+  buildExport();
+}
+function toCsv(rows, headers, keys){
+  const esc = v => `"${String(v??'').replace(/"/g,'""')}"`;
+  return [headers.join(',')].concat(rows.map(r=>keys.map(k=>esc(r[k])).join(','))).join('\n');
+}
+function flattenPr(){
+  const rows=[]; pr.forEach(r=> (r.items||[]).forEach(i=> rows.push({prNo:r.prNo, branch:r.branch, item:i.item, qty:i.qty, by:r.by, date:r.date, priority:r.priority, status:r.status})));
+  return rows;
+}
+function flattenProc(){
+  const rows=[]; proc.forEach(p=> (p.items||[]).forEach(i=> rows.push({poNo:p.poNo, prno:p.prno, branch:p.branch, item:i.item, category:i.category, supplier:p.supplier, qty:i.qty, cost:i.cost, lineTotal:(i.qty*i.cost).toFixed(2), date:p.date, status:p.status, updatedAt:p.updatedAt})));
+  return rows;
+}
+function buildExport(){
+  const pick = document.getElementById('export-pick').value;
+  let csv='';
+  if(pick==='pr') csv = toCsv(flattenPr(), ['PRNo','Branch','Item','Qty','RequestedBy','DateNeeded','Priority','Status'], ['prNo','branch','item','qty','by','date','priority','status']);
+  if(pick==='proc') csv = toCsv(flattenProc(), ['PONo','PRNo','Branch','Item','Category','Supplier','Qty','UnitCostPHP','LineTotalPHP','Date','Status','LastUpdated'], ['poNo','prno','branch','item','category','supplier','qty','cost','lineTotal','date','status','updatedAt']);
+  if(pick==='sup') csv = toCsv(sup.map(s=>{
+      const orders = proc.filter(p=>p.supplier===s.name);
+      return {...s, poCount: orders.length, totalSpend: orders.reduce((sum,p)=>sum+poTotals(p).cost,0).toFixed(2)};
+    }), ['Supplier','Category','Contact','Phone','Email','Rating','Status','POCount','TotalSpendPHP'], ['name','category','contact','phone','email','rating','status','poCount','totalSpend']);
+  if(pick==='ac') csv = toCsv(ac.map(a=>{
+      const s = sup.find(x=>x.name===a.provider);
+      return {...a, contact: s? `${s.contact||''} ${s.phone||''}`.trim() : '', dueStatus: dueStatus(a.next)};
+    }), ['Branch','Unit','Model','ServiceProvider','ProviderContact','InstallDate','LastService','IntervalDays','NextDue','Status','DueStatus'], ['branch','unit','model','provider','contact','install','last','interval','next','status','dueStatus']);
+  if(pick==='achist'){
+    const rows=[]; ac.forEach(a=> (a.history||[]).forEach(h=> rows.push({branch:a.branch, unit:a.unit, date:h.date, provider:h.provider, notes:h.notes})));
+    csv = toCsv(rows, ['Branch','Unit','ServiceDate','Provider','Notes'], ['branch','unit','date','provider','notes']);
+  }
+  if(pick==='br') csv = toCsv(br.map(b=>({...b, progress: b.checklist&&b.checklist.length ? `${b.checklist.filter(c=>c.done).length}/${b.checklist.length}` : '0/0'})),
+    ['Branch','Region','Stage','TargetOpen','Manager','Phone','Email','Address','Notes','ChecklistProgress'], ['name','region','stage','target','manager','phone','email','address','notes','progress']);
+  if(pick==='cv'){
+    const rows=[];
+    cv.forEach(r=> (r.items||[]).forEach(it=> (r.suppliers||[]).forEach(s=>{
+      const p = (r.prices[it.id]||{})[s.id];
+      if(p==null) return;
+      rows.push({cvNo:r.cvNo, branch:r.branch, prno:r.prno, item:it.item, qty:it.qty, date:r.date, supplier:s.name, price:p, winner: (r.winners&&r.winners[it.id]===s.id)?'Yes':'', status:r.status});
+    })));
+    csv = toCsv(rows, ['CVNo','Branch','PRNo','Item','Qty','Date','Supplier','UnitPricePHP','Winner','Status'], ['cvNo','branch','prno','item','qty','date','supplier','price','winner','status']);
+  }
+  if(pick==='inv') csv = toCsv(catalog.map(c=>{ const hh=priceHistory.filter(x=>x.item.toLowerCase()===c.name.toLowerCase()); return {...c, lp: hh.length? hh[hh.length-1].price : ''}; }), ['Item','Category','Unit','OnHand','ReorderLevel','LastPricePHP','Notes'], ['name','category','unit','qty','reorder','lp','notes']);
+  if(pick==='pricehist') csv = toCsv(priceHistory, ['Item','Supplier','PricePHP','Date','PONo','Branch'], ['item','supplier','price','date','poNo','branch']);
+  document.getElementById('export-area').value = csv || 'No data yet.';
+}
+function copyExport(){
+  const ta = document.getElementById('export-area');
+  ta.select();
+  try{ navigator.clipboard.writeText(ta.value); notify('Copied. Paste into Excel or Google Sheets.'); }
+  catch(e){ document.execCommand('copy'); }
+}
+
+// DASHBOARD
+function buildDashboard(){
+  const totalSpend = proc.reduce((s,p)=>s+poTotals(p).cost,0);
+  const openPO = proc.filter(p=>p.status!=='Delivered'&&p.status!=='Cancelled').length;
+  const pendingPr = pr.filter(x=>x.status==='Pending').length;
+  const needsService = ac.filter(a=>a.status==='Needs service'||a.status==='Under repair'||dueStatus(a.next)==='Due for Service/Cleaning').length;
+  document.getElementById('dash-stats').innerHTML =
+    statCard(ICN.fileText, pendingPr, 'Pending PRs') +
+    statCard(ICN.cart, openPO, 'Open POs') +
+    statCard(ICN.peso, '₱'+totalSpend.toLocaleString('en-PH',{minimumFractionDigits:2}), 'Total procurement value') +
+    statCard(ICN.users, sup.length, 'Active suppliers') +
+    statCard(ICN.building, br.length, 'Total branches') +
+    statCard(ICN.snow, needsService, 'Aircon needing service') +
+    statCard(ICN.alert, catalog.filter(c=>+c.reorder>0 && (+c.qty||0)<=+c.reorder).length, 'Low stock items');
+  document.getElementById('dash-branch-stats').innerHTML = BR_STAGES.map(s=>statCard(ICN.building, br.filter(b=>b.stage===s).length, s)).join('');
+  const events = []
+    .concat(pr.map(r=>({when:r.date||'', label:`PR ${r.prNo} · ${r.branch}`, status:prStatusPill(r.status)})))
+    .concat(proc.map(p=>({when:p.updatedAt||p.date||'', label:`PO ${p.poNo} · ${p.branch}`, status:procStatusPill(p.status,false)})))
+    .sort((a,b)=> (b.when||'').localeCompare(a.when||'')).slice(0,8);
+  const el = document.getElementById('dash-activity');
+  el.innerHTML = events.length? events.map(e=>`<div class="activity"><span>${e.label}</span>${e.status}</div>`).join('') : '<div class="empty">No activity yet — add a purchase request or order to get started.</div>';
+}
+
+// COMPANY / DOCUMENT HEADER (for printed & exported PR/PO forms)
+function loadHeader(){ try{ const r=localStorage.getItem('companyHeader'); return r?JSON.parse(r):{name:'',address:'',contact:''}; }catch(e){ return {name:'',address:'',contact:''}; } }
+function fillHeaderForm(){
+  const h = loadHeader();
+  document.getElementById('hdr-name').value = h.name||'';
+  document.getElementById('hdr-address').value = h.address||'';
+  document.getElementById('hdr-contact').value = h.contact||'';
+}
+function saveCompanyHeader(){
+  const h = { name:document.getElementById('hdr-name').value, address:document.getElementById('hdr-address').value, contact:document.getElementById('hdr-contact').value };
+  try{ localStorage.setItem('companyHeader', JSON.stringify(h)); notify('Header saved — it will appear on printed and exported PR/PO forms.'); }catch(e){ notify('Could not save header.'); }
+}
+
+// PRINT & PDF EXPORT (standard PR / PO form template)
+function buildDocBodyHtml(type, id){
+  const rec = type==='pr'? pr.find(x=>x.id===id) : proc.find(x=>x.id===id);
+  if(!rec) return '';
+  const h = loadHeader();
+  const no = type==='pr'? rec.prNo : rec.poNo;
+  const title = type==='pr' ? 'PURCHASE REQUEST' : 'PURCHASE ORDER';
+  let theadCols, itemsRows, totalsRow='', meta;
+  if(type==='pr'){
+    theadCols = '<tr><th>Item</th><th class="r">Qty</th></tr>';
+    itemsRows = (rec.items||[]).map(it=>`<tr><td>${it.item}</td><td class="r">${it.qty}</td></tr>`).join('');
+    meta = `<div class="metagrid"><div><b>Branch:</b> ${rec.branch||''}</div><div><b>Date needed:</b> ${rec.date||''}</div>
+      <div><b>Requested by:</b> ${rec.by||''}</div><div><b>Priority:</b> ${rec.priority||''}</div><div><b>Status:</b> ${rec.status||''}</div></div>`;
+  } else {
+    theadCols = '<tr><th>Item</th><th>Category</th><th class="r">Qty</th><th class="r">Unit cost</th><th class="r">Line total</th></tr>';
+    itemsRows = (rec.items||[]).map(it=>`<tr><td>${it.item}</td><td>${it.category||''}</td><td class="r">${it.qty}</td><td class="r">₱${(+it.cost).toLocaleString('en-PH',{minimumFractionDigits:2})}</td><td class="r">₱${(it.qty*it.cost).toLocaleString('en-PH',{minimumFractionDigits:2})}</td></tr>`).join('');
+    const t = poTotals(rec);
+    totalsRow = `<tr><td colspan="4" class="r" style="font-weight:700">Total</td><td class="r" style="font-weight:700">₱${t.cost.toLocaleString('en-PH',{minimumFractionDigits:2})}</td></tr>`;
+    meta = `<div class="metagrid"><div><b>Branch:</b> ${rec.branch||''}</div><div><b>Date:</b> ${rec.date||''}</div>
+      <div><b>Supplier:</b> ${rec.supplier||''}</div><div><b>Status:</b> ${rec.status||''}</div>${rec.prno?`<div><b>Ref. PR No:</b> ${rec.prno}</div>`:''}</div>`;
+  }
+  const sigLabels = type==='pr' ? ['Prepared by','Checked by','Approved by'] : ['Prepared by','Checked by','Approved by'];
+  const sigNames = [rec.preparedBy||'', rec.checkedBy||'', rec.approvedBy||''];
+  const sigHtml = `<div class="sig">${sigLabels.map((lbl,i)=>`<div>${sigNames[i]||'&nbsp;'}<br><span style="font-size:10.5px">${lbl}</span></div>`).join('')}</div>`;
+  return `<div class="print-doc">
+    <div class="hd"><h1>${h.name||'Your Company Name'}</h1>${h.address?`<p>${h.address}</p>`:''}${h.contact?`<p>${h.contact}</p>`:''}</div>
+    <div class="doctitle">${title}</div>
+    <div class="noline"><span><b>No:</b> ${no}</span><span><b>Date printed:</b> ${today()}</span></div>
+    ${meta}
+    <table><thead>${theadCols}</thead><tbody>${itemsRows}${totalsRow}</tbody></table>
+    ${sigHtml}
+  </div>`;
+}
+function printRecord(type, id){
+  const body = buildDocBodyHtml(type, id);
+  if(!body){ notify('Record not found.'); return; }
+  const w = window.open('', '_blank');
+  if(!w){ notify('Please allow pop-ups for this site to print.'); return; }
+  w.document.open();
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Print</title></head><body style="margin:0;background:#fff">${body}</body></html>`);
+  w.document.close();
+  setTimeout(()=>{ try{ w.focus(); w.print(); }catch(e){} }, 300);
+}
+async function exportPdfRecord(type, id){
+  const rec = type==='pr'? pr.find(x=>x.id===id) : proc.find(x=>x.id===id);
+  if(!rec){ notify('Record not found.'); return; }
+  if(!window.html2canvas || !window.jspdf){ notify('PDF tools are still loading — please try again in a moment.'); return; }
+  const holder = document.getElementById('pdf-render-area');
+  holder.innerHTML = buildDocBodyHtml(type, id);
+  const target = holder.querySelector('.print-doc');
+  try{
+    const canvas = await window.html2canvas(target, { scale:2, backgroundColor:'#ffffff' });
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit:'pt', format:'a4' });
+    const pageW = doc.internal.pageSize.getWidth(), pageH = doc.internal.pageSize.getHeight();
+    const imgW = pageW - 40, imgH = canvas.height * imgW / canvas.width;
+    let heightLeft = imgH, position = 20;
+    doc.addImage(imgData,'PNG',20,position,imgW,imgH);
+    heightLeft -= (pageH-40);
+    while(heightLeft > 0){
+      position = heightLeft - imgH + 20;
+      doc.addPage();
+      doc.addImage(imgData,'PNG',20,position,imgW,imgH);
+      heightLeft -= (pageH-40);
+    }
+    const no = type==='pr'? rec.prNo : rec.poNo;
+    const blob = doc.output('blob');
+    const downloads = window.claude ? await window.claude.use('downloads') : null;
+    if(downloads){
+      await downloads.save({ filename: `${no}.pdf`, data: blob });
+    } else {
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    }
+  }catch(e){
+    if(!(e && e.code==='declined')) notify('Could not export the PDF.');
+  }
+  holder.innerHTML='';
+}
+
+refreshBranchSelects(); supplierOptions(); userOptions(); resetPr(); resetProc(); resetCv(); renderPr(); renderProc(); renderSup(); renderCv(); renderAc(); renderBr(); renderUsers(); populateItemCatalogList(); populateCatList(); renderInventory(); fillHeaderForm(); fillSecurityForm(); buildDashboard(); checkLogin();
+</script>
+</body>
+</html>
